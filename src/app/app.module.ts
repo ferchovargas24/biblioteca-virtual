@@ -12,6 +12,7 @@ import { MensajeServicio } from '../servicios/mensaje/mensaje.service';
 import { AngularFireAuthModule } from 'angularfire2/auth';
 import { LoginServicio } from '../servicios/login/login.servicio';
 import { MejoraContraseñaServicio } from '../servicios/mensaje/mejoraContrase\u00F1a';
+import { HomePage } from '../pages/home/home';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { MejoraContraseñaServicio } from '../servicios/mensaje/mejoraContrase\u
   ],
   bootstrap: [IonicApp],
   entryComponents: [
-    MyApp
+    MyApp,
+    HomePage
   ],
   providers: [
     StatusBar,
