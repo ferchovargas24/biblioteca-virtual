@@ -15,13 +15,13 @@
 </style>
 
 <ion-content scrollbar-y="false" padding class="login" 
-style="background-image:url('https://image.freepik.com/vector-gratis/fondo-de-triangulos-translucidos-azul-y-naranja_1023-94.jpg');background-repeat: no-repeat;background-size: 110% 110%;">
+style="background-image:url('https://image.freepik.com/foto-gratis/fondo-azul-y-naranja_23-2147633368.jpg');background-repeat: no-repeat;background-size: 110% 110%;">
 
   
 <ion-grid>
   <ion-row>
     <ion-col col-4></ion-col>
-    <ion-col col-4 style="margin-left: auto;margin-right: auto;display: block;">
+    <ion-col col-4 style="position: absolute; top: 0; right: 0;;display: block;">
       <img src="https://userscontent2.emaze.com/images/f761bf3b-e782-4e95-a328-83c5c69b44d2/75ca1275751ac895a1e402974b81cae9.png" style="width:100%;height:auto;border-radius: 100%">
     </ion-col>
     <ion-col col-4></ion-col>
@@ -30,7 +30,7 @@ style="background-image:url('https://image.freepik.com/vector-gratis/fondo-de-tr
 
   <ion-list>
 
-    <ion-item style="padding:0px !important; border-bottom:none !important;border-top:none;font-size: 14px;margin-top:10px;background:none;border-bottom:1px solid white;box-shadow:none;">
+    <ion-item style="padding:0px !important; border-bottom:none !important;border-top:none;font-size: 14px;margin-top:100px;background:none;border-bottom:1px solid white;box-shadow:none;">
       <ion-label floating style="color:rgb(6, 92, 95)">Usuario</ion-label>
       <ion-input style="color:black;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="usuario.email"></ion-input>
     </ion-item>
@@ -41,7 +41,7 @@ style="background-image:url('https://image.freepik.com/vector-gratis/fondo-de-tr
 
   </ion-list>
 
-  <button style="margin-top: 15px;height: 35px;font-size: 14px;background: #10ABF4;" ion-button block (click)="login(usuario)">Inicia Sesión</button>
-  <button ion-button style="background-color: transparent;color:white;border-color:white;border:1px solid white;margin-top:20px;height: 35px;font-size: 14px;"
+  <button style="margin-top: 15px;height: 35px;font-size: 14px;background: rgb(244, 126, 16);" ion-button block (click)="login(usuario)">Inicia Sesión</button>
+  <button ion-button style="background-color: transparent;color:rgb(248, 245, 242);border-color:white;border:1px solid white;margin-top:20px;height: 35px;font-size: 14px;"
     block (click)="addUser(usuario)">Registrarse</button>
 </ion-content>
