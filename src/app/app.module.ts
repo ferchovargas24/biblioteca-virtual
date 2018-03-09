@@ -17,7 +17,7 @@ import { HomePage } from '../pages/home/home';
 @NgModule({
   declarations: [
     MyApp,
-    HomePage
+   HomePage
   ],
   imports: [
     BrowserModule,
@@ -25,6 +25,7 @@ import { HomePage } from '../pages/home/home';
     AngularFireModule.initializeApp(FireBase_Config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
+    
 
   ],
   bootstrap: [IonicApp],

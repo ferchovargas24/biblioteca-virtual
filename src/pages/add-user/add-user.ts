@@ -39,4 +39,6 @@ export class AddUserPage {
      await this.logingIn.loginUser(usuario);
      
   }
+
+ 
 }
