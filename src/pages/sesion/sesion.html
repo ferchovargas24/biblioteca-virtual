@@ -15,13 +15,21 @@
       <ion-thumbnail item-start>
         <img src="{{libro.imagen}}">
       </ion-thumbnail>
+      <p>{{libro.idLibro}}</p>
       <h2>{{libro.autor}}</h2>
       <p>{{libro.titulo}}</p>
-      <button ion-button clear item-end (click)="agregarPedido(libro.autor)">Pedir prestamo</button>
+      <p>{{libro.cantidad}}</p>
+      <button ion-button clear item-end (click)="agregarPedido(libro.idLibro ,libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Pedir prestamo</button>
     </ion-item>
   </ion-list>
 
   <ion-list>
+
+      <ion-item style="font-size: 14px;background:none;">
+          <ion-label floating style="color:black">Autor</ion-label>
+          <ion-input style="color:black;border-bottom-color:white;box-shadow:none;" type="number" [(ngModel)]="idLibro"></ion-input>
+        </ion-item>
+
     <ion-item style="font-size: 14px;background:none;">
       <ion-label floating style="color:black">Autor</ion-label>
       <ion-input style="color:black;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="autor"></ion-input>
@@ -36,10 +44,15 @@
       <ion-label floating style="color:black">Imagen</ion-label>
       <ion-input style="color:black;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="imagen"></ion-input>
     </ion-item>
+
+    <ion-item style="font-size: 14px;background:none;">
+        <ion-label floating style="color:black">Cantidad</ion-label>
+        <ion-input style="color:black;border-bottom-color:white;box-shadow:none;" type="number" [(ngModel)]="cantidad"></ion-input>
+      </ion-item>
   </ion-list>
 
   <button ion-button style=" color:black; margin-top: 15px;height: 35px;font-size: 14px;background-color: transparent;border:1px solid white"
-    clear block (click)="createBook(autor, titulo,imagen)">
+    clear block (click)="createBook(idLibro ,autor, titulo,imagen, cantidad)">
     Guardar Libro
   </button>
 </ion-content>
