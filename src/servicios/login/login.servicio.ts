@@ -10,7 +10,7 @@ import { AngularFireDatabase } from 'angularfire2/database';
 export class LoginServicio {
 
     constructor(private afauth: AngularFireAuth, private mensaje: ToastController,
-        private firebase: AngularFireDatabase,
+       
     ) { }
     async loginUser(usuario: Usuario) {
 

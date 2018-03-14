@@ -1,12 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
-import { ListaUsuariosServicio } from '../../servicios/lista-usuarios/lista-usuarios.servicio';
-import { MensajeServicio } from '../../servicios/mensaje/mensaje.service';
+import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
+import { SesionPage } from '../sesion/sesion';
 import { LoginServicio } from '../../servicios/login/login.servicio';
-
-
-
 
 @IonicPage()
 @Component({
@@ -16,29 +13,35 @@ import { LoginServicio } from '../../servicios/login/login.servicio';
 export class AddUserPage {
 
   usuario = {} as Usuario;
+  formgroup: FormGroup;
+  emailUsu: AbstractControl;
+  passwordUsu: AbstractControl;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
-    private registro: ListaUsuariosServicio,
-    private toast: MensajeServicio,
     private logingIn: LoginServicio,
+    public fb: FormBuilder
   ) {
+
+    this.formgroup = fb.group({
+      emailUsu: ['', Validators.required],
+      passwordUsu: ['', Validators.required],
+    });
+
+
+    this.emailUsu = this.formgroup.controls['emailUsu'];
+    this.passwordUsu = this.formgroup.controls['passwordUsu'];
   }
 
   ionViewDidLoad() {
 
   }
 
-  addUser(usuario: Usuario) {
-
-    this.registro.addUser(usuario).then(ref => {
-      this.toast.show(`${usuario.email} registrado!`);
-    });
-  }
-
   async login(usuario: Usuario) {
-     await this.logingIn.loginUser(usuario);
-     
+    await this.logingIn.loginUser(usuario).then(evento => {
+      this.navCtrl.setRoot(SesionPage);
+    });
+
   }
 
- 
+
 }
