@@ -2,12 +2,11 @@ import { Injectable } from '@angular/core'
 import { Usuario } from '../../app/Models/User/user.model';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController } from 'ionic-angular';
-import { AngularFireDatabase } from 'angularfire2/database';
-
-
 
 @Injectable()
 export class LoginServicio {
+
+    public isLogged:boolean;
 
     constructor(private afauth: AngularFireAuth, private mensaje: ToastController,
        
@@ -20,9 +19,12 @@ export class LoginServicio {
                 duration: 3000
             }).present();
         }else{
+
+            
              this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
             .then(evento => {
-
+                this.isLogged=true;
+                console.log(this.isLogged);
                 this.mensaje.create({
                     message: `Bienvenido ${usuario.email}`,
                     duration: 3000
@@ -30,11 +32,10 @@ export class LoginServicio {
 
             })
             .catch((FirebaseAuthException) => {
-                this.mensaje.create({
-                    message: ` ${FirebaseAuthException}`,
-                    duration: 3000
-                }).present();
+                this.isLogged=false;
+                console.log(this.isLogged);
             });
+            
         }
 
 

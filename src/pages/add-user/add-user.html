@@ -16,19 +16,28 @@
     <br>
     <br>
     <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:rgb(6, 92, 95)">Usuario</ion-label>
+      <ion-label floating style="color:white">Usuario</ion-label>
       <ion-input style="color:white;border-bottom-color:white;box-shadow:none;"
       type="email" formControlName="emailUsu" [(ngModel)]="usuario.email"></ion-input>
     </ion-item>
     
     <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:rgb(6, 92, 95)">Contraseña</ion-label>
+      <ion-label floating style="color:white">Contraseña</ion-label>
       <ion-input style="color:white;border-bottom-color:white;box-shadow:none;"
        type="password" formControlName="passwordUsu" [(ngModel)]="usuario.pass"></ion-input>
     </ion-item>
+    
 
-    <button ion-button  style="margin-top: 15px;height: 35px;font-size: 14px;background-color: transparent;border-color:naranja;border:1px solid rgb(226, 115, 25)" block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
+    <ion-footer color= "primary">
+      <button ion-button  style="color: white;" clear  block [disabled]="!formgroup.valid" 
+      (click)="login(usuario)">Iniciar Sesión</button>
+    </ion-footer>
+   
       
   </form>
 </ion-content>
