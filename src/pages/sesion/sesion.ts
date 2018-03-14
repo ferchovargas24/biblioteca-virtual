@@ -50,4 +50,8 @@ export class SesionPage {
       })
     }
   }
+
+  agregarPedido(autorPedido: string){
+    console.log(autorPedido);
+  }
 }

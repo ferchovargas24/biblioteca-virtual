@@ -17,7 +17,7 @@
       </ion-thumbnail>
       <h2>{{libro.autor}}</h2>
       <p>{{libro.titulo}}</p>
-      <button ion-button clear item-end>Pedir prestamo</button>
+      <button ion-button clear item-end (click)="agregarPedido(libro.autor)">Pedir prestamo</button>
     </ion-item>
   </ion-list>
 
