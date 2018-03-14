@@ -29,7 +29,7 @@ export class SesionPage {
 
   }
 
-  createBook(autor: string, titulo: string): void {
-    this.libroRef.push({ autor, titulo });
+  createBook(autor: string, titulo: string, imagen: string): void {
+    this.libroRef.push({ autor, titulo, imagen });
   }
 }

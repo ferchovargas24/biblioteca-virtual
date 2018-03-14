@@ -19,14 +19,23 @@
         <ion-label fixed>titulo</ion-label>
         <ion-input type="text" [(ngModel)]="titulo"></ion-input>
       </ion-item>
+
+      <ion-item>
+          <ion-label fixed>Imagen</ion-label>
+          <ion-input type="text" [(ngModel)]="imagen"></ion-input>
+        </ion-item>
     </ion-list>
   
-    <button ion-button block (click)="createBook(autor, titulo)">
+    <button ion-button block (click)="createBook(autor, titulo,imagen)">
       Guardar Libro
     </button>
     <ion-list>
         <ion-item *ngFor="let libro of libros">
-          {{ libro.autor }}    
+            <ion-card>
+                <img src= "{{ libro.imagen}}"/>
+                <div class="card-title">{{ libro.autor}}</div>
+                <div class="card-subtitle">{{ libro.titulo}}</div>
+              </ion-card>     
         </ion-item>
       </ion-list>
   </ion-content>
