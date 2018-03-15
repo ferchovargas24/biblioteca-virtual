@@ -1,8 +1,14 @@
 page-home{
 .bg-image{
-    background-image: url('../assets/imgs/fondo-general.jpg');
+    background-image: url('../assets/imgs/imagen6.png');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+}
+#botonBienvenido{
+    position: relative;
+    width:300px;
+    margin: auto;
+    margin-top:10vh;
 }
 }

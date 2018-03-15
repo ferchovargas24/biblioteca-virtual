@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
@@ -20,7 +20,8 @@ export class AddUserPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private logingIn: LoginServicio,
     public fb: FormBuilder,
-    private toastCtrl : ToastController
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController
   ) {
 
     this.formgroup = fb.group({
@@ -37,25 +38,31 @@ export class AddUserPage {
 
   }
 
- async login(usuario: Usuario) {
+  async login(usuario: Usuario) {
     await this.logingIn.loginUser(usuario);
-    
+
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent'
+    });
+    loading.present();
+
     setTimeout(() => {
-      if(this.logingIn.isLogged == true){
+
+      if (this.logingIn.isLogged == true) {
         this.navCtrl.setRoot(SesionPage);
-        console.log("se inicio sesion")
-      }else{
+      } else {
         this.toastCtrl.create({
           message: 'Algo salió mal, intentalo de nuevo',
-        duration: 3000
+          duration: 3000
         }).present();
-        console.log("estas en add-user.ts" + this.logingIn.isLogged)
       }
-    },1000) 
-      
-          
 
-    
+      loading.dismiss();
+    }, 1000)
+
+
+
+
   }
 
 
