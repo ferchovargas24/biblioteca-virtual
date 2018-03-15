@@ -10,8 +10,6 @@ import firebase from 'firebase';
 export class SesionPage {
 
   public libros: Array<any> = [];
-  public numeroPedido: number;
-  public nuevaCantidad: number;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
 
@@ -24,9 +22,8 @@ export class SesionPage {
     this.initializeItems();
   }
 
-  createBook(idLibro: number = 0 , autor: string, titulo: string, imagen: string, cantidad: number): void {
-    idLibro +1;
-    this.libroRef.push({ idLibro, autor, titulo, imagen, cantidad });
+  createBook(autor: string, titulo: string, imagen: string, cantidad: number): void {
+    this.libroRef.push({ autor, titulo, imagen, cantidad });
   }
 
   initializeItems() {
@@ -39,45 +36,63 @@ export class SesionPage {
       });
     });
   }
+
   getItems(ev) {
     // Reset items back to all of the items
     this.initializeItems();
 
     // set val to the value of the ev target
     var val = ev.target.value;
-
+    console.log(val);
     // if the value is an empty string don't filter the items
-    if (val && val.trim() != '') {
-      this.libros = this.libros.filter((item) => {
-        return (item.autor.toLowerCase().indexOf(
-          val.toLowerCase()) > -1);
-      })
+    if (val && val.trim() != ' ') {
+      this.libros = this.libros.filter((libro) => {
+        return ((libro.autor.toLowerCase().indexOf(val.toLowerCase()) > -1) ||
+          (libro.titulo.toLowerCase().indexOf(val.toLowerCase()) > -1));
+      });
     }
   }
 
 
-  agregarPedido(idLibroPedido: number, autorPedido: string, tituloPedido: string, libroImagenPedido: string, libroCantidad: number) {
+  agregarPedido(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
 
-      
-      if (libroCantidad > 0 ) {
+    var idLibroPedido: string;
 
-        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
-          this.mensaje.create({
-            message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
-            duration: 2000,
-            position: 'middle'
-          }).present();
-          console.log(libroCantidad);
-          libroCantidad = (libroCantidad - 1);
-          this.libroRef.update({idLibroPedido, libroCantidad});
-        })
-      } else {
+    this.libroRef.on('value', libroSnapshot => {
+      libroSnapshot.forEach(libroSnap => {
+        if (tituloPedido == libroSnap.val().titulo) {
+          idLibroPedido = libroSnap.key;
+          console.log(idLibroPedido);
+        }
+        return false;
+      });
+    });
+
+    if (cantidad > 0) {
+
+      this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
         this.mensaje.create({
-          message: 'No tenemos libros en existencia, intenta mas tarde',
-          duration: 2000,
+          message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
+          duration: 3000,
           position: 'middle'
         }).present();
 
-      }
+        cantidad = (cantidad - 1);
+        console.log(cantidad);
+
+        const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
+        libroReference.update({
+          cantidad
+        });
+      })
+    } else {
+      this.mensaje.create({
+        message: 'No tenemos libros en existencia, intenta mas tarde',
+        duration: 2000,
+        position: 'middle'
+      }).present();
+
+    }
   }
+
 }
