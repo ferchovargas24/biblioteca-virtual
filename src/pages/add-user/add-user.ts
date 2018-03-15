@@ -4,6 +4,8 @@ import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
 import { LoginServicio } from '../../servicios/login/login.servicio';
+import { database } from 'firebase';
+import { AdministradorPage } from '../administrador/administrador';
 
 @IonicPage()
 @Component({
@@ -16,6 +18,7 @@ export class AddUserPage {
   formgroup: FormGroup;
   emailUsu: AbstractControl;
   passwordUsu: AbstractControl;
+
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private logingIn: LoginServicio,
@@ -38,6 +41,8 @@ export class AddUserPage {
 
   }
 
+  
+
   async login(usuario: Usuario) {
     await this.logingIn.loginUser(usuario);
 
@@ -59,11 +64,9 @@ export class AddUserPage {
 
       loading.dismiss();
     }, 1000)
-
-
-
-
   }
 
-
+  async registrarse(usuario: Usuario){
+    await this.logingIn.register(usuario);
+  }
 }

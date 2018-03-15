@@ -13,13 +13,15 @@ import { LoginServicio } from '../servicios/login/login.servicio';
 import { MejoraContraseñaServicio } from '../servicios/mensaje/mejoraContrase\u00F1a';
 import { HomePage } from '../pages/home/home';
 import { SesionPage } from '../pages/sesion/sesion';
+import { AdministradorPage } from '../pages/administrador/administrador';
 
 
 @NgModule({
   declarations: [
     MyApp,
    HomePage,
-   SesionPage
+   SesionPage,
+   AdministradorPage
   ],
   imports: [
     BrowserModule,
@@ -34,8 +36,8 @@ import { SesionPage } from '../pages/sesion/sesion';
   entryComponents: [
     MyApp,
     HomePage,
-    SesionPage
-    
+    SesionPage,
+    AdministradorPage
   ],
   providers: [
     StatusBar,

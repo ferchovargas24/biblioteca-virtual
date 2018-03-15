@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, MenuController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase';
+import { LoginServicio } from '../../servicios/login/login.servicio';
+import { HomePage } from '../home/home';
 
 @IonicPage()
 @Component({
@@ -13,8 +15,13 @@ export class SesionPage {
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private mensaje: ToastController
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private mensaje: ToastController,
+    private logOutService: LoginServicio,
+    private menu: MenuController,
+    private loadingCtrl: LoadingController
   ) {
+    menu.enable(true);
   }
 
   ionViewDidLoad() {
@@ -38,13 +45,10 @@ export class SesionPage {
   }
 
   getItems(ev) {
-    // Reset items back to all of the items
     this.initializeItems();
 
-    // set val to the value of the ev target
     var val = ev.target.value;
-    console.log(val);
-    // if the value is an empty string don't filter the items
+
     if (val && val.trim() != ' ') {
       this.libros = this.libros.filter((libro) => {
         return ((libro.autor.toLowerCase().indexOf(val.toLowerCase()) > -1) ||
@@ -63,30 +67,28 @@ export class SesionPage {
       this.libroRef.on('value', libroSnapshot => {
         libroSnapshot.forEach(libroSnap => {
           if (tituloPedido == libroSnap.val().titulo) {
-            idLibroPedido= " ";
             idLibroPedido = libroSnap.key;
-            console.log(idLibroPedido);
           }
           return false;
         });
       });
-      
+
       this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
         this.mensaje.create({
           message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
           duration: 3000,
           position: 'middle'
         }).present();
-
-        cantidad = (cantidad - 1);
-        console.log(cantidad);
-
-        const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
-        libroReference.update({
-          cantidad
-        });
       })
 
+      cantidad = (cantidad - 1);
+      console.log(cantidad);
+
+      const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
+      libroReference.update({
+        cantidad
+      });
+      idLibroPedido = "";
     } else {
       this.mensaje.create({
         message: 'No tenemos libros en existencia, intenta mas tarde',
@@ -98,4 +100,18 @@ export class SesionPage {
 
   }
 
+  async logOut() {
+    await this.logOutService.logout();
+    let loading = this.loadingCtrl.create({
+      spinner: 'crescent',
+      content: "!Hasta Luego! Regresa Pronto"
+    });
+    loading.present();
+
+    setTimeout(() => {
+      this.navCtrl.setRoot(HomePage);
+      loading.dismiss();
+    }, 400)
+
+  }
 }
