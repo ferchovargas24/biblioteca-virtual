@@ -8,8 +8,8 @@
       </ion-thumbnail>
       <h2>{{libro.autor}}</h2>
       <p>{{libro.titulo}}</p>
-      <p>{{libro.cantidad}}</p>
-      <button style="color:black;" ion-button clear item-end (click)="agregarPedido(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
+      <p>Libros disponibles: {{libro.cantidad}}</p>
+      <button style="color:black;" ion-button small  clear  (click)="agregarPedido(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
     </ion-item>
   </ion-list>
 

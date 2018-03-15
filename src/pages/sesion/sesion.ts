@@ -58,18 +58,19 @@ export class SesionPage {
 
     var idLibroPedido: string;
 
-    this.libroRef.on('value', libroSnapshot => {
-      libroSnapshot.forEach(libroSnap => {
-        if (tituloPedido == libroSnap.val().titulo) {
-          idLibroPedido = libroSnap.key;
-          console.log(idLibroPedido);
-        }
-        return false;
-      });
-    });
-
     if (cantidad > 0) {
 
+      this.libroRef.on('value', libroSnapshot => {
+        libroSnapshot.forEach(libroSnap => {
+          if (tituloPedido == libroSnap.val().titulo) {
+            idLibroPedido= " ";
+            idLibroPedido = libroSnap.key;
+            console.log(idLibroPedido);
+          }
+          return false;
+        });
+      });
+      
       this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
         this.mensaje.create({
           message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
@@ -85,6 +86,7 @@ export class SesionPage {
           cantidad
         });
       })
+
     } else {
       this.mensaje.create({
         message: 'No tenemos libros en existencia, intenta mas tarde',
@@ -93,6 +95,7 @@ export class SesionPage {
       }).present();
 
     }
+
   }
 
 }
