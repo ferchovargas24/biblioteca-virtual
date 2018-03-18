@@ -5,5 +5,11 @@ page-add-user{
         background-position: center;
         background-size: cover;
         display: flex;
+        background-attachment: fixed;
+    }
+
+    #footer{
+
+        position: fixed;
     }
     }

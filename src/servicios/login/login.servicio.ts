@@ -3,23 +3,29 @@ import { Usuario } from '../../app/Models/User/user.model';
 import { AngularFireAuth } from 'angularfire2/auth';
 import { ToastController } from 'ionic-angular';
 import firebase from 'firebase';
-import { FirebaseAuth } from '@firebase/auth-types';
-
 
 @Injectable()
 export class LoginServicio {
 
     public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
     public isLogged: boolean;
-    public isAdmin: boolean;
-    public usuAd: number;
+    public iterador: number;
+    public iterador2: number;
     public usuarios: Array<any> = [];
 
-    constructor(private afauth: AngularFireAuth, private mensaje: ToastController,
+    constructor(private afauth: AngularFireAuth, private mensaje: ToastController
+    ) { this.llenarUsuarios(); }
 
-    ) { }
+    llenarUsuarios() {
 
-
+        this.usuRef.on('value', usuarioSnapshot => {
+            this.usuarios = [];
+            usuarioSnapshot.forEach(usuSnap => {
+                this.usuarios.push(usuSnap.val());
+                return false;
+            });
+        });
+    }
 
     async register(usuario: Usuario) {
 
@@ -39,16 +45,23 @@ export class LoginServicio {
         this.isLogged = false;
     }
 
-    async loginUser(usuario: Usuario) {
 
-        
+    async loginUser(usuario: Usuario) {
 
         this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
             .then(evento => {
 
                 this.isLogged = true;
 
-                console.log(this.isLogged);
+                console.log(usuario.email);
+
+                for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
+                    var numero1 = this.usuarios[this.iterador];
+                    console.log(this.iterador);
+                   if(numero1.email == usuario.email && numero1.pass == usuario.pass){
+                        console.log(numero1);
+                    }
+            }
                 this.mensaje.create({
                     message: `Bienvenido ${usuario.email}`,
                     duration: 3000
@@ -60,7 +73,7 @@ export class LoginServicio {
             });
     };
 
-    continuingLogin(){
+    continuingLogin() {
 
         console.log('hola')
     }

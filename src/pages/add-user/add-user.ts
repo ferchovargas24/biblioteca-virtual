@@ -35,17 +35,19 @@ export class AddUserPage {
 
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
+
   }
 
   ionViewDidLoad() {
-
+    
   }
 
-  
 
   async login(usuario: Usuario) {
-    await this.logingIn.loginUser(usuario);
 
+    
+    await this.logingIn.loginUser(usuario);
+      
     let loading = this.loadingCtrl.create({
       spinner: 'crescent'
     });
