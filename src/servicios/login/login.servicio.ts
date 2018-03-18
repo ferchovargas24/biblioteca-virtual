@@ -9,8 +9,8 @@ export class LoginServicio {
 
     public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
     public isLogged: boolean;
+    public isAdmin: boolean;
     public iterador: number;
-    public iterador2: number;
     public usuarios: Array<any> = [];
 
     constructor(private afauth: AngularFireAuth, private mensaje: ToastController
@@ -57,11 +57,20 @@ export class LoginServicio {
 
                 for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
                     var numero1 = this.usuarios[this.iterador];
-                    console.log(this.iterador);
+                    
                    if(numero1.email == usuario.email && numero1.pass == usuario.pass){
-                        console.log(numero1);
+                       console.log(numero1.admin);
+                    if(numero1.admin == 1){
+                        this.isAdmin=true;
+                        console.log(this.isAdmin);
+                    }else{
+                        this.isAdmin=false;
+                        console.log(this.isAdmin);
+                    }    
+
                     }
             }
+
                 this.mensaje.create({
                     message: `Bienvenido ${usuario.email}`,
                     duration: 3000

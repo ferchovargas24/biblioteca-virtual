@@ -39,15 +39,15 @@ export class AddUserPage {
   }
 
   ionViewDidLoad() {
-    
+
   }
 
 
   async login(usuario: Usuario) {
 
-    
+
     await this.logingIn.loginUser(usuario);
-      
+
     let loading = this.loadingCtrl.create({
       spinner: 'crescent'
     });
@@ -55,20 +55,25 @@ export class AddUserPage {
 
     setTimeout(() => {
 
-      if (this.logingIn.isLogged == true) {
+      if (this.logingIn.isLogged == true && this.logingIn.isAdmin == false) {
         this.navCtrl.setRoot(SesionPage);
       } else {
-        this.toastCtrl.create({
-          message: 'Algo salió mal, intentalo de nuevo',
-          duration: 3000
-        }).present();
+        if (this.logingIn.isLogged == true && this.logingIn.isAdmin == true) {
+          this.navCtrl.setRoot(AdministradorPage);
+        } else {
+          this.toastCtrl.create({
+            message: 'Algo salió mal, intentalo de nuevo',
+            duration: 3000
+          }).present();
+        }
       }
 
+
       loading.dismiss();
-    }, 1000)
+    }, 3000)
   }
 
-  async registrarse(usuario: Usuario){
+  async registrarse(usuario: Usuario) {
     await this.logingIn.register(usuario);
   }
 }

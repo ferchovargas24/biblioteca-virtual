@@ -29,10 +29,6 @@ export class SesionPage {
     this.initializeItems();
   }
 
-  createBook(autor: string, titulo: string, imagen: string, cantidad: number): void {
-    this.libroRef.push({ autor, titulo, imagen, cantidad });
-  }
-
   initializeItems() {
 
     this.libroRef.on('value', libroSnapshot => {
@@ -45,6 +41,7 @@ export class SesionPage {
   }
 
   getItems(ev) {
+
     this.initializeItems();
 
     var val = ev.target.value;
