@@ -14,7 +14,7 @@ export class LoginServicio {
     public usuarios: Array<any> = [];
 
     constructor(private afauth: AngularFireAuth, private mensaje: ToastController
-    ) { this.llenarUsuarios(); }
+    ) { }
 
     llenarUsuarios() {
 
@@ -65,6 +65,7 @@ export class LoginServicio {
 
     async loginUser(usuario: Usuario) {
 
+        this.llenarUsuarios();
         this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
             .then(evento => {
 
