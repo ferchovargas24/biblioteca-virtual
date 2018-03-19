@@ -63,6 +63,6 @@ export class AddUserPage {
         }
       }
       loading.dismiss();
-    }, 2000)
+    }, 1000)
   }
 }
