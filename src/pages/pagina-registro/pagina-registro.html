@@ -1,0 +1,30 @@
+<ion-header no-border>
+
+  <ion-navbar transparent>
+      <ion-title>
+          Registro
+      </ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+  <ion-content padding class="bg-image">
+
+    <ion-item style="font-size: 14px;background:none;">
+      <ion-label floating style="color:white">Usuario</ion-label>
+      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="email"  [(ngModel)]="usuario.email"></ion-input>
+    </ion-item>
+
+    <ion-item style="font-size: 14px;background:none;">
+      <ion-label floating style="color:white">Contraseña</ion-label>
+      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="password"  [(ngModel)]="usuario.pass"></ion-input>
+    </ion-item>
+
+    <ion-item style="font-size: 14px;background:none;">
+        <ion-label  style="color:white" >Administardor</ion-label>
+        <ion-checkbox [(ngModel)]="admin"></ion-checkbox>
+      </ion-item>
+
+      <button ion-button style="color: white;" clear block  (click)="registarUsuario(usuario); registrarEnBase(usuario,admin)">Registrar</button>
+  </ion-content>

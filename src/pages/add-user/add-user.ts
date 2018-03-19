@@ -37,12 +37,7 @@ export class AddUserPage {
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
 
   }
-
-  ionViewDidLoad() {
-
-  }
-
-
+  
   async login(usuario: Usuario) {
 
 
@@ -67,13 +62,7 @@ export class AddUserPage {
           }).present();
         }
       }
-
-
       loading.dismiss();
-    }, 3000)
-  }
-
-  async registrarse(usuario: Usuario) {
-    await this.logingIn.register(usuario);
+    }, 2000)
   }
 }

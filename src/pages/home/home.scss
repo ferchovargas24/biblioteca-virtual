@@ -1,8 +1,8 @@
 page-home{
 .bg-image{
-    background-image: url('../assets/imgs/fondo-app.png');
+    background-image: url('../assets/imgs/fondo3.png');
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: unset;
     background-size: cover;
 }
 #botonBienvenido{
@@ -11,4 +11,5 @@ page-home{
     margin: auto;
     margin-top:10vh;
 }
+
 }

@@ -30,19 +30,36 @@ export class LoginServicio {
     async register(usuario: Usuario) {
 
         await this.afauth.auth.createUserWithEmailAndPassword(usuario.email, usuario.pass).then(evento => {
-            console.log(this.isLogged);
+           
             this.mensaje.create({
                 message: `Registrado ${usuario.email}`,
                 duration: 3000
             }).present();
-
-            this.usuRef.push(usuario);
+        }).catch((FirebaseError) => {
+            this.mensaje.create({
+                message: `Ya esta registrado el usuario`,
+                duration: 3000
+            }).present();
         });
+    }
+
+    registrarEnBase(usuario : Usuario, administrador:boolean){
+        var admin;
+        var email = usuario.email;
+        var password = usuario.pass;
+        if(administrador == true){
+            admin = 1;
+            this.usuRef.push({email,password,admin});
+        }else{
+            admin=0;
+            this.usuRef.push({email,password,admin});
+        }
     }
 
     logout() {
         this.afauth.auth.signOut();
         this.isLogged = false;
+        this.isAdmin = false;
     }
 
 
