@@ -14,6 +14,7 @@ export class SesionPage {
   public libros: Array<any> = [];
   public usuarios: Array<any> = [];
   public email: string;
+  public isAble: boolean;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
   public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
@@ -45,9 +46,9 @@ export class SesionPage {
     });
   }
 
-  openPage(pagina: string){
+  openPage(pagina: string) {
     console.log(pagina);
-    this.navCtrl.push(pagina,{email:this.email});
+    this.navCtrl.push(pagina, { email: this.email });
   }
   getItems(ev) {
 
@@ -69,7 +70,7 @@ export class SesionPage {
     var idLibroPedido: string;
 
     if (cantidad > 0) {
-
+      this.isAble = true;
       this.libroRef.on('value', libroSnapshot => {
         libroSnapshot.forEach(libroSnap => {
           if (tituloPedido == libroSnap.val().titulo) {
@@ -98,7 +99,7 @@ export class SesionPage {
       idLibroPedido = "";
 
     } else {
-
+      this.isAble == false;
       this.mensaje.create({
         message: 'No tenemos libros en existencia, intenta mas tarde',
         duration: 2000,
@@ -110,21 +111,26 @@ export class SesionPage {
   }
 
   asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string) {
-    
+
     var idUsuario;
 
-    this.usuRef.on('value', usuarioSnapshot => {
-      usuarioSnapshot.forEach(usuSnap => {
-        if(this.email == usuSnap.val().email){
-          idUsuario = usuSnap.key
-        }
-        return false;
+    if (this.isAble == true) {
+      this.usuRef.on('value', usuarioSnapshot => {
+        usuarioSnapshot.forEach(usuSnap => {
+          if (this.email == usuSnap.val().email) {
+            idUsuario = usuSnap.key
+          }
+          return false;
+        });
       });
-    });
 
-    console.log(idUsuario)
-    const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
-    usuarioReference.push({autorPedido,tituloPedido,libroImagenPedido});
+      console.log(idUsuario)
+      const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
+      usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
+      this.isAble=false;
+    }
+
+  
   }
 
 

@@ -53,7 +53,7 @@ export class LoginServicio {
         var email = usuario.email;
         var pass = usuario.pass;
 
-        if (this.isRegistered == true) {
+        if (this.isRegistered == false) {
 
             if (administrador == true) {
                 admin = 1;
