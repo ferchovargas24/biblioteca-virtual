@@ -17,6 +17,9 @@
         <button ion-item (click)="logOut()">
           Cerrar Sesión
         </button>
+        <button ion-item (click)="openPage('MisLibrosPage')">
+          Mis libros
+        </button>
       </ion-list>
     </ion-content>
   </ion-menu>
@@ -31,7 +34,7 @@
       <h2>{{libro.autor}}</h2>
       <p>{{libro.titulo}}</p>
       <p>Libros disponibles: {{libro.cantidad}}</p>
-      <button style="color:black;" ion-button small  clear  (click)="agregarPedido(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
+      <button style="color:black;" ion-button small  clear  (click)="agregarPedido(libro.autor, libro.titulo, libro.imagen, libro.cantidad);asignarLibros(libro.autor, libro.titulo, libro.imagen)">Solicitar préstamo</button>
     </ion-item>
   </ion-list>
 </ion-content>

@@ -24,7 +24,7 @@ export class AddUserPage {
     private logingIn: LoginServicio,
     public fb: FormBuilder,
     private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
   ) {
 
     this.formgroup = fb.group({
@@ -37,7 +37,7 @@ export class AddUserPage {
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
 
   }
-  
+
   async login(usuario: Usuario) {
 
 
@@ -51,10 +51,23 @@ export class AddUserPage {
     setTimeout(() => {
 
       if (this.logingIn.isLogged == true && this.logingIn.isAdmin == false) {
-        this.navCtrl.setRoot(SesionPage);
+        this.navCtrl.setRoot(SesionPage,{email:this.usuario.email});
+
+        this.toastCtrl.create({
+          message: `Bienvenido ${usuario.email}`,
+          duration: 3000
+        }).present();
+
       } else {
+        
+
         if (this.logingIn.isLogged == true && this.logingIn.isAdmin == true) {
           this.navCtrl.setRoot(AdministradorPage);
+          this.toastCtrl.create({
+            message: `Bienvenido administrador  ${usuario.email}`,
+            duration: 3000
+          }).present();
+
         } else {
           this.toastCtrl.create({
             message: 'Algo salió mal, intentalo de nuevo',
@@ -63,6 +76,6 @@ export class AddUserPage {
         }
       }
       loading.dismiss();
-    }, 1000)
+    }, 2000)
   }
 }

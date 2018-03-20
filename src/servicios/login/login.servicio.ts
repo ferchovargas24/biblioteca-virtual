@@ -10,11 +10,14 @@ export class LoginServicio {
     public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
     public isLogged: boolean;
     public isAdmin: boolean;
+    public isRegistered: boolean;
     public iterador: number;
     public usuarios: Array<any> = [];
 
     constructor(private afauth: AngularFireAuth, private mensaje: ToastController
     ) { }
+
+
 
     llenarUsuarios() {
 
@@ -30,11 +33,13 @@ export class LoginServicio {
     async register(usuario: Usuario) {
 
         await this.afauth.auth.createUserWithEmailAndPassword(usuario.email, usuario.pass).then(evento => {
-           
+
             this.mensaje.create({
                 message: `Registrado ${usuario.email}`,
                 duration: 3000
             }).present();
+            this.isRegistered = true;
+
         }).catch((FirebaseError) => {
             this.mensaje.create({
                 message: `Ya esta registrado el usuario`,
@@ -43,16 +48,20 @@ export class LoginServicio {
         });
     }
 
-    registrarEnBase(usuario : Usuario, administrador:boolean){
+    registrarEnBase(usuario: Usuario, administrador: boolean) {
         var admin;
         var email = usuario.email;
-        var password = usuario.pass;
-        if(administrador == true){
-            admin = 1;
-            this.usuRef.push({email,password,admin});
-        }else{
-            admin=0;
-            this.usuRef.push({email,password,admin});
+        var pass = usuario.pass;
+
+        if (this.isRegistered == true) {
+
+            if (administrador == true) {
+                admin = 1;
+                this.usuRef.push({ email, pass, admin });
+            } else {
+                admin = 0;
+                this.usuRef.push({ email, pass, admin });
+            }
         }
     }
 
@@ -65,39 +74,45 @@ export class LoginServicio {
 
     async loginUser(usuario: Usuario) {
 
+
         this.llenarUsuarios();
-        this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
-            .then(evento => {
+        setTimeout(() => {
+            this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
+                .then(evento => {
 
-                this.isLogged = true;
 
-                console.log(usuario.email);
+                    console.log(usuario.email);
+                    console.log(usuario.pass);
 
-                for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
-                    var numero1 = this.usuarios[this.iterador];
-                    
-                   if(numero1.email == usuario.email && numero1.pass == usuario.pass){
-                       console.log(numero1.admin);
-                    if(numero1.admin == 1){
-                        this.isAdmin=true;
-                        console.log(this.isAdmin);
-                    }else{
-                        this.isAdmin=false;
-                        console.log(this.isAdmin);
-                    }    
+                    for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
+                        var numero1 = this.usuarios[this.iterador];
+                        console.log(numero1.email)
+                        console.log(numero1.pass)
+                        if (numero1.email == usuario.email && numero1.pass == usuario.pass) {
+                            console.log(numero1.admin);
+                            console.log(numero1.email);
+                            console.log(numero1.pass);
+                            if (numero1.admin == 1) {
+                                this.isLogged = true;
+                                this.isAdmin = true;
+                                console.log(this.isAdmin);
+                            } else {
+                                this.isLogged = true;
+                                this.isAdmin = false;
+                                console.log(this.isAdmin);
+                            }
+
+                        }
 
                     }
-            }
 
-                this.mensaje.create({
-                    message: `Bienvenido ${usuario.email}`,
-                    duration: 3000
-                }).present();
 
-            }).catch((FirebaseAuthException) => {
-                this.isLogged = false;
-                console.log(this.isLogged);
-            });
+                }).catch((FirebaseAuthException) => {
+                    this.isLogged = false;
+                    console.log(this.isLogged);
+                });
+        },1000)
+
     };
 
     continuingLogin() {

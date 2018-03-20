@@ -12,16 +12,21 @@ import { HomePage } from '../home/home';
 export class SesionPage {
 
   public libros: Array<any> = [];
+  public usuarios: Array<any> = [];
+  public email: string;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
+  public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private mensaje: ToastController,
     private logOutService: LoginServicio,
     private menu: MenuController,
-    private loadingCtrl: LoadingController
+    private loadingCtrl: LoadingController,
   ) {
     menu.enable(true);
+    this.email = navParams.get('email');
+    console.log(this.email);
   }
 
   ionViewDidLoad() {
@@ -40,6 +45,10 @@ export class SesionPage {
     });
   }
 
+  openPage(pagina: string){
+    console.log(pagina);
+    this.navCtrl.push(pagina,{email:this.email});
+  }
   getItems(ev) {
 
     this.initializeItems();
@@ -71,6 +80,7 @@ export class SesionPage {
       });
 
       this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
+
         this.mensaje.create({
           message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
           duration: 3000,
@@ -86,7 +96,9 @@ export class SesionPage {
         cantidad
       });
       idLibroPedido = "";
+
     } else {
+
       this.mensaje.create({
         message: 'No tenemos libros en existencia, intenta mas tarde',
         duration: 2000,
@@ -96,6 +108,25 @@ export class SesionPage {
     }
 
   }
+
+  asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string) {
+    
+    var idUsuario;
+
+    this.usuRef.on('value', usuarioSnapshot => {
+      usuarioSnapshot.forEach(usuSnap => {
+        if(this.email == usuSnap.val().email){
+          idUsuario = usuSnap.key
+        }
+        return false;
+      });
+    });
+
+    console.log(idUsuario)
+    const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
+    usuarioReference.push({autorPedido,tituloPedido,libroImagenPedido});
+  }
+
 
   async logOut() {
     await this.logOutService.logout();
@@ -108,7 +139,7 @@ export class SesionPage {
     setTimeout(() => {
       this.navCtrl.setRoot(HomePage);
       loading.dismiss();
-    }, 400)
+    }, 2000)
 
   }
 }
