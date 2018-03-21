@@ -23,6 +23,7 @@ this.email = navParams.get('email');
   }
 
   mostrarMisLibros(){
+
     var idUsuario;
     this.usuRef.on('value', usuarioSnapshot => {
       usuarioSnapshot.forEach(usuSnap => {
@@ -38,6 +39,7 @@ this.email = navParams.get('email');
     usuarioReference.on('value', libroSnapshot => {
       this.misLibros = [];
       libroSnapshot.forEach(libroSnap => {
+
         this.misLibros.push(libroSnap.val());
         return false;
       });

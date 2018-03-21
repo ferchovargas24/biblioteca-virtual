@@ -41,6 +41,7 @@ export class LoginServicio {
             this.isRegistered = true;
 
         }).catch((FirebaseError) => {
+            this.isRegistered = false;
             this.mensaje.create({
                 message: `Ya esta registrado el usuario`,
                 duration: 3000
@@ -48,21 +49,24 @@ export class LoginServicio {
         });
     }
 
-    registrarEnBase(usuario: Usuario, administrador: boolean) {
+    async registrarEnBase(usuario: Usuario, administrador: boolean) {
         var admin;
         var email = usuario.email;
         var pass = usuario.pass;
 
-        if (this.isRegistered == false) {
+        setTimeout(() => {
+            console.log(this.isRegistered)
+            if (this.isRegistered == true) {
 
-            if (administrador == true) {
-                admin = 1;
-                this.usuRef.push({ email, pass, admin });
-            } else {
-                admin = 0;
-                this.usuRef.push({ email, pass, admin });
+                if (administrador == true) {
+                    admin = 1;
+                    this.usuRef.push({ email, pass, admin });
+                }else{
+                    admin=0;
+                    this.usuRef.push({ email, pass, admin });
+                }
             }
-        }
+        }, 1000);
     }
 
     logout() {
@@ -86,20 +90,19 @@ export class LoginServicio {
 
                     for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
                         var numero1 = this.usuarios[this.iterador];
-                        console.log(numero1.email)
-                        console.log(numero1.pass)
+
                         if (numero1.email == usuario.email && numero1.pass == usuario.pass) {
-                            console.log(numero1.admin);
-                            console.log(numero1.email);
-                            console.log(numero1.pass);
+
                             if (numero1.admin == 1) {
                                 this.isLogged = true;
                                 this.isAdmin = true;
                                 console.log(this.isAdmin);
+
                             } else {
                                 this.isLogged = true;
                                 this.isAdmin = false;
                                 console.log(this.isAdmin);
+
                             }
 
                         }
@@ -111,7 +114,7 @@ export class LoginServicio {
                     this.isLogged = false;
                     console.log(this.isLogged);
                 });
-        },1000)
+        }, 1000)
 
     };
 

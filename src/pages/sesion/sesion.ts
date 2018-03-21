@@ -13,8 +13,11 @@ export class SesionPage {
 
   public libros: Array<any> = [];
   public usuarios: Array<any> = [];
+  public misLibros: Array<any> = [];
   public email: string;
+  iterador: number;
   public isAble: boolean;
+  public isInUse: boolean = false;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
   public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
@@ -27,7 +30,6 @@ export class SesionPage {
   ) {
     menu.enable(true);
     this.email = navParams.get('email');
-    console.log(this.email);
   }
 
   ionViewDidLoad() {
@@ -47,7 +49,6 @@ export class SesionPage {
   }
 
   openPage(pagina: string) {
-    console.log(pagina);
     this.navCtrl.push(pagina, { email: this.email });
   }
   getItems(ev) {
@@ -64,59 +65,15 @@ export class SesionPage {
     }
   }
 
-
-  agregarPedido(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
-
-    var idLibroPedido: string;
-
-    if (cantidad > 0) {
-      this.isAble = true;
-      this.libroRef.on('value', libroSnapshot => {
-        libroSnapshot.forEach(libroSnap => {
-          if (tituloPedido == libroSnap.val().titulo) {
-            idLibroPedido = libroSnap.key;
-          }
-          return false;
-        });
-      });
-
-      this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
-
-        this.mensaje.create({
-          message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
-          duration: 3000,
-          position: 'middle'
-        }).present();
-      })
-
-      cantidad = (cantidad - 1);
-      console.log(cantidad);
-
-      const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
-      libroReference.update({
-        cantidad
-      });
-      idLibroPedido = "";
-
-    } else {
-      this.isAble == false;
-      this.mensaje.create({
-        message: 'No tenemos libros en existencia, intenta mas tarde',
-        duration: 2000,
-        position: 'middle'
-      }).present();
-
-    }
-
-  }
-
-  asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string) {
+  asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
 
     var idUsuario;
+    var idLibroPedido;
 
-    if (this.isAble == true) {
+    if (cantidad > 0) {
       this.usuRef.on('value', usuarioSnapshot => {
         usuarioSnapshot.forEach(usuSnap => {
+
           if (this.email == usuSnap.val().email) {
             idUsuario = usuSnap.key
           }
@@ -124,13 +81,75 @@ export class SesionPage {
         });
       });
 
-      console.log(idUsuario)
       const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
-      usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
-      this.isAble=false;
-    }
 
-  
+      console.log("El libro que estoy pidiendo" + tituloPedido)
+
+      usuarioReference.on('value', libroSnapshot => {
+        this.misLibros = [];
+        libroSnapshot.forEach(libroSnap => {
+          this.misLibros.push(libroSnap.val());
+          return false;
+        });
+      });
+
+      for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
+        var tituloArreglo = this.misLibros[this.iterador];
+        console.log(this.iterador)
+        // console.log(tituloArreglo);
+        if (tituloArreglo.tituloPedido == tituloPedido) {
+          var tituloQueSeTiene = tituloArreglo.tituloPedido;
+        }
+      }
+
+
+      if (tituloQueSeTiene == tituloPedido) {
+        this.mensaje.create({
+          message: "Ya tienes este titulo rentado",
+          position: 'middle',
+          duration: 3000
+        }).present();
+        console.log("Entraste a donde el titulo ya lo tienes ")
+        this.isInUse = true;
+        this.isAble = false;
+
+      } else {
+
+        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
+
+          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
+          this.mensaje.create({
+            message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
+            duration: 3000,
+            position: 'middle'
+          }).present();
+        })
+
+        this.libroRef.on('value', libroSnapshot => {
+          libroSnapshot.forEach(libroSnap => {
+
+            if (tituloPedido == libroSnap.val().titulo) {
+              idLibroPedido = libroSnap.key;
+            }
+
+            return false;
+          });
+        });
+        cantidad = (cantidad - 1);
+        const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
+        libroReference.update({
+          cantidad
+        });
+      }
+
+    } else {
+      this.mensaje.create({
+        message: 'No tenemos libros en existencia, intenta mas tarde',
+        duration: 2000,
+        position: 'middle'
+      }).present();
+
+    }
   }
 
 
