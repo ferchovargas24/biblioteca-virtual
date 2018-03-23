@@ -18,6 +18,7 @@ export class SesionPage {
   public email: string;
   iterador: number;
   public info = null;
+  idUsuario;
   public isAble: boolean;
   public isInUse: boolean = false;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
@@ -38,7 +39,8 @@ export class SesionPage {
   ionViewDidLoad() {
 
     this.initializeItems();
- 
+    this.llenarMisLibros();
+    this.add_reminder();
   }
 
 
@@ -70,32 +72,37 @@ export class SesionPage {
     }
   }
 
+  llenarMisLibros() {
+
+
+    this.usuRef.on('value', usuarioSnapshot => {
+      usuarioSnapshot.forEach(usuSnap => {
+
+        if (this.email == usuSnap.val().email) {
+          this.idUsuario = usuSnap.key
+        }
+        return false;
+      });
+    });
+
+
+    const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
+
+    usuarioReference.on('value', libroSnapshot => {
+      this.misLibros = [];
+      libroSnapshot.forEach(libroSnap => {
+        this.misLibros.push(libroSnap.val());
+        return false;
+      });
+    });
+  }
+
   asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
 
     var idUsuario;
     var idLibroPedido;
 
     if (cantidad > 0) {
-      this.usuRef.on('value', usuarioSnapshot => {
-        usuarioSnapshot.forEach(usuSnap => {
-
-          if (this.email == usuSnap.val().email) {
-            idUsuario = usuSnap.key
-          }
-          return false;
-        });
-      });
-
-
-      const  usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
-
-      usuarioReference.on('value', libroSnapshot => {
-        this.misLibros = [];
-        libroSnapshot.forEach(libroSnap => {
-          this.misLibros.push(libroSnap.val());
-          return false;
-        });
-      });
 
       for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
         var tituloArreglo = this.misLibros[this.iterador];
@@ -122,7 +129,7 @@ export class SesionPage {
           var dia = fechaRentado.getDate();
           var mes = fechaRentado.getMonth() + 1;
           var año = fechaRentado.getFullYear();
-
+          const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
           usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, año });
           this.mensaje.create({
             message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
@@ -164,8 +171,6 @@ export class SesionPage {
       }).present();
 
     }
-
-
   }
 
 
@@ -205,34 +210,23 @@ export class SesionPage {
       usuarioSnapshot.forEach(usuSnap => {
 
         if (this.email == usuSnap.val().email) {
-         idUsuario = usuSnap.key
+          idUsuario = usuSnap.key
         }
         return false;
       });
     });
 
+    for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
+      var tituloArreglo = this.misLibros[this.iterador];
 
-    const  usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
-
-    usuarioReference.on('value', libroSnapshot => {
-      this.misLibros = [];
-      libroSnapshot.forEach(libroSnap => {
-        this.misLibros.push(libroSnap.val());
-        return false;
-      });
-    });
-    
-      for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
-        var tituloArreglo = this.misLibros[this.iterador];
-
-        if((Fecha.getDate() - tituloArreglo.dia) == 1){
-          console.log("Ya hay que regresarlos")
-          this.localNotifications.schedule({
-            id: this.iterador,
-            title: "Recordatorio",
-            text: "Recuerda regresar los libros " + tituloArreglo.tituloPedido,
-          });
-        }
+      if ((Fecha.getDate() - tituloArreglo.dia) == 1) {
+        console.log("Ya hay que regresarlos")
+        this.localNotifications.schedule({
+          id: this.iterador,
+          title: "Recordatorio",
+          text: "Recuerda regresar los libros " + tituloArreglo.tituloPedido,
+        });
       }
+    }
   }
 }
