@@ -206,25 +206,20 @@ export class SesionPage {
     console.log(Fecha.getDate());
 
     var idUsuario
-    this.usuRef.on('value', usuarioSnapshot => {
-      usuarioSnapshot.forEach(usuSnap => {
-
-        if (this.email == usuSnap.val().email) {
-          idUsuario = usuSnap.key
-        }
-        return false;
-      });
-    });
+    console.log(this.misLibros)
 
     for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
       var tituloArreglo = this.misLibros[this.iterador];
 
-      if ((Fecha.getDate() - tituloArreglo.dia) == 1) {
-        console.log("Ya hay que regresarlos")
+      if ( ((Fecha.getDate() - tituloArreglo.dia) <= 1)) {
+       
+        var fechaEntrega = Fecha.getDate() - tituloArreglo.dia;
+        console.log("Ya hay que regresarlos" + fechaEntrega)
         this.localNotifications.schedule({
           id: this.iterador,
-          title: "Recordatorio",
-          text: "Recuerda regresar los libros " + tituloArreglo.tituloPedido,
+          title: "Devuelve el libro a tiempo, evita cargos adicionales",
+          text: "Te quedan: " + fechaEntrega + " días," + tituloArreglo.tituloPedido,
+          smallIcon : 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png'
         });
       }
     }
