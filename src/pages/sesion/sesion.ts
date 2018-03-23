@@ -228,7 +228,7 @@ export class SesionPage {
         if((Fecha.getDate() - tituloArreglo.dia) == 1){
           console.log("Ya hay que regresarlos")
           this.localNotifications.schedule({
-            id: iterador,
+            id: this.iterador,
             title: "Recordatorio",
             text: "Recuerda regresar los libros " + tituloArreglo.tituloPedido,
           });
