@@ -39,7 +39,7 @@ export class SesionPage {
     this.initializeItems();
   }
 
-  
+
   initializeItems() {
 
     this.libroRef.on('value', libroSnapshot => {
@@ -84,7 +84,7 @@ export class SesionPage {
         });
       });
 
-      
+
       const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
 
       console.log("El libro que estoy pidiendo" + tituloPedido)
@@ -120,7 +120,7 @@ export class SesionPage {
 
         this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
 
-          
+
           usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
           this.mensaje.create({
             message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
@@ -135,13 +135,6 @@ export class SesionPage {
             sound: null,
             icon: 'https://png.icons8.com/ios/1600/book-stack.png'
           });
-
-          this.localNotifications.schedule({
-            id:2,
-            title:'Se te acaba el tiempo',
-            text:'Recuerda entregar el libro:' + tituloPedido,
-            at: new Date(new Date().getTime()+60000)
-          })
         })
 
         this.libroRef.on('value', libroSnapshot => {
@@ -169,6 +162,8 @@ export class SesionPage {
       }).present();
 
     }
+
+    this.add_reminder(tituloPedido);
   }
 
 
@@ -184,6 +179,35 @@ export class SesionPage {
       this.navCtrl.setRoot(HomePage);
       loading.dismiss();
     }, 2000)
+
+  }
+
+  add_reminder(tituloPedido: string) {
+    var d = 2;
+
+    var Fecha = new Date();
+
+    var horas = Fecha.getHours();
+    var minutos = Fecha.getMinutes();
+    var mes = Fecha.getMonth();
+    var dia = Fecha.getDate();
+    if (mes < 10) { mes = <any>('0' + mes) };
+    if (dia < 10) { dia = <any>('0' + dia) };
+    if (horas < 10) { horas = <any>('0' + horas) };
+    if (minutos < 10) { minutos = <any>('0' + minutos) };
+    Fecha.setMinutes(minutos+2);
+
+    console.log(Fecha.toString());
+
+    this.localNotifications.schedule({
+      id: 1,
+      title: 'Recordatorio',
+      text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
+      sound: null,
+      at: new Date(Fecha),
+      icon: 'https://png.icons8.com/ios/1600/book-stack.png'
+    });
+
 
   }
 }
