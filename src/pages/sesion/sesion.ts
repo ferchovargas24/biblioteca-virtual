@@ -163,7 +163,7 @@ export class SesionPage {
 
     }
 
-    this.add_reminder(tituloPedido);
+    
   }
 
 
@@ -183,7 +183,8 @@ export class SesionPage {
   }
 
   add_reminder(tituloPedido: string) {
-    var d = 2;
+
+    var d = 0;
 
     var Fecha = new Date();
 
