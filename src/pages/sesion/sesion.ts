@@ -84,6 +84,7 @@ export class SesionPage {
         });
       });
 
+      
       const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
 
       console.log("El libro que estoy pidiendo" + tituloPedido)
@@ -138,8 +139,8 @@ export class SesionPage {
           this.localNotifications.schedule({
             id:2,
             title:'Se te acaba el tiempo',
-            text:'Recuerda entregar el libro a tiempo para evitar cargos adicionales',
-            at: new Date(new Date().getTime()+300000)
+            text:'Recuerda entregar el libro:' + tituloPedido,
+            at: new Date(new Date().getTime()+60000)
           })
         })
 
