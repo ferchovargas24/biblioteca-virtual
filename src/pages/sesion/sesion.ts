@@ -3,6 +3,7 @@ import { IonicPage, NavController, NavParams, ToastController, MenuController, L
 import firebase from 'firebase';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
+import { LocalNotifications } from '@ionic-native/local-notifications';
 
 @IonicPage()
 @Component({
@@ -27,6 +28,7 @@ export class SesionPage {
     private logOutService: LoginServicio,
     private menu: MenuController,
     private loadingCtrl: LoadingController,
+    private localNotifications: LocalNotifications
   ) {
     menu.enable(true);
     this.email = navParams.get('email');
@@ -37,6 +39,7 @@ export class SesionPage {
     this.initializeItems();
   }
 
+  
   initializeItems() {
 
     this.libroRef.on('value', libroSnapshot => {
@@ -110,13 +113,20 @@ export class SesionPage {
           duration: 3000
         }).present();
         console.log("Entraste a donde el titulo ya lo tienes ")
-        this.isInUse = true;
         this.isAble = false;
+
+        this.localNotifications.schedule({
+          id: 1,
+          text: 'Single ILocalNotification',
+          sound: null
+          
+        });
 
       } else {
 
         this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
 
+          
           usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
           this.mensaje.create({
             message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
