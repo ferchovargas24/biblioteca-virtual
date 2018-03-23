@@ -115,13 +115,6 @@ export class SesionPage {
         console.log("Entraste a donde el titulo ya lo tienes ")
         this.isAble = false;
 
-        this.localNotifications.schedule({
-          id: 1,
-          text: 'Single ILocalNotification',
-          sound: null
-          
-        });
-
       } else {
 
         this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
@@ -133,6 +126,20 @@ export class SesionPage {
             duration: 3000,
             position: 'middle'
           }).present();
+
+          this.localNotifications.schedule({
+            id: 1,
+            text: 'Has solicitado el libro: ' + tituloPedido + " \nRecuerda recogerlo en tu campus lo antes posible",
+            sound: null,
+            icon: 'https://image.flaticon.com/icons/svg/149/149258.svg'
+          });
+
+          this.localNotifications.schedule({
+            id:2,
+            title:'Se te acaba el tiempo',
+            text:'Recuerda entregar el libro a tiempo para evitar cargos adicionales',
+            at: new Date(new Date().getTime()+5000)
+          })
         })
 
         this.libroRef.on('value', libroSnapshot => {
