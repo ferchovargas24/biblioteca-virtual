@@ -17,6 +17,7 @@ export class SesionPage {
   public misLibros: Array<any> = [];
   public email: string;
   iterador: number;
+  public info = null;
   public isAble: boolean;
   public isInUse: boolean = false;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
@@ -32,183 +33,196 @@ export class SesionPage {
   ) {
     menu.enable(true);
     this.email = navParams.get('email');
+    if (!localStorage.getItem("rp_data")) {
+      var rp_data = { data: [] };
+      localStorage.setItem("rp_data", JSON.stringify(rp_data));
+    }
+
+    this.info = JSON.parse(localStorage.getItem("rp_data"));
   }
 
-  ionViewDidLoad() {
+ionViewDidLoad() {
 
-    this.initializeItems();
+  this.initializeItems();
+}
+
+
+initializeItems() {
+
+  this.libroRef.on('value', libroSnapshot => {
+    this.libros = [];
+    libroSnapshot.forEach(libroSnap => {
+      this.libros.push(libroSnap.val());
+      return false;
+    });
+  });
+}
+
+openPage(pagina: string) {
+  this.navCtrl.push(pagina, { email: this.email });
+}
+getItems(ev) {
+
+  this.initializeItems();
+
+  var val = ev.target.value;
+
+  if (val && val.trim() != ' ') {
+    this.libros = this.libros.filter((libro) => {
+      return ((libro.autor.toLowerCase().indexOf(val.toLowerCase()) > -1) ||
+        (libro.titulo.toLowerCase().indexOf(val.toLowerCase()) > -1));
+    });
   }
+}
 
+asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
 
-  initializeItems() {
+  var idUsuario;
+  var idLibroPedido;
 
-    this.libroRef.on('value', libroSnapshot => {
-      this.libros = [];
-      libroSnapshot.forEach(libroSnap => {
-        this.libros.push(libroSnap.val());
+  if (cantidad > 0) {
+    this.usuRef.on('value', usuarioSnapshot => {
+      usuarioSnapshot.forEach(usuSnap => {
+
+        if (this.email == usuSnap.val().email) {
+          idUsuario = usuSnap.key
+        }
         return false;
       });
     });
-  }
 
-  openPage(pagina: string) {
-    this.navCtrl.push(pagina, { email: this.email });
-  }
-  getItems(ev) {
 
-    this.initializeItems();
+    const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
 
-    var val = ev.target.value;
+    console.log("El libro que estoy pidiendo" + tituloPedido)
 
-    if (val && val.trim() != ' ') {
-      this.libros = this.libros.filter((libro) => {
-        return ((libro.autor.toLowerCase().indexOf(val.toLowerCase()) > -1) ||
-          (libro.titulo.toLowerCase().indexOf(val.toLowerCase()) > -1));
+    usuarioReference.on('value', libroSnapshot => {
+      this.misLibros = [];
+      libroSnapshot.forEach(libroSnap => {
+        this.misLibros.push(libroSnap.val());
+        return false;
       });
+    });
+
+    for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
+      var tituloArreglo = this.misLibros[this.iterador];
+      console.log(this.iterador)
+      // console.log(tituloArreglo);
+      if (tituloArreglo.tituloPedido == tituloPedido) {
+        var tituloQueSeTiene = tituloArreglo.tituloPedido;
+      }
     }
-  }
-
-  asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
-
-    var idUsuario;
-    var idLibroPedido;
-
-    if (cantidad > 0) {
-      this.usuRef.on('value', usuarioSnapshot => {
-        usuarioSnapshot.forEach(usuSnap => {
-
-          if (this.email == usuSnap.val().email) {
-            idUsuario = usuSnap.key
-          }
-          return false;
-        });
-      });
 
 
-      const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + idUsuario + '/misLibros');
-
-      console.log("El libro que estoy pidiendo" + tituloPedido)
-
-      usuarioReference.on('value', libroSnapshot => {
-        this.misLibros = [];
-        libroSnapshot.forEach(libroSnap => {
-          this.misLibros.push(libroSnap.val());
-          return false;
-        });
-      });
-
-      for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
-        var tituloArreglo = this.misLibros[this.iterador];
-        console.log(this.iterador)
-        // console.log(tituloArreglo);
-        if (tituloArreglo.tituloPedido == tituloPedido) {
-          var tituloQueSeTiene = tituloArreglo.tituloPedido;
-        }
-      }
-
-
-      if (tituloQueSeTiene == tituloPedido) {
-        this.mensaje.create({
-          message: "Ya tienes este titulo rentado",
-          position: 'middle',
-          duration: 3000
-        }).present();
-        console.log("Entraste a donde el titulo ya lo tienes ")
-        this.isAble = false;
-
-      } else {
-
-        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
-
-
-          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
-          this.mensaje.create({
-            message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
-            duration: 3000,
-            position: 'middle'
-          }).present();
-
-          this.localNotifications.schedule({
-            id: 1,
-            title: 'Nueva solicitud',
-            text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
-            sound: null,
-            icon: 'https://png.icons8.com/ios/1600/book-stack.png'
-          });
-        })
-
-        this.libroRef.on('value', libroSnapshot => {
-          libroSnapshot.forEach(libroSnap => {
-
-            if (tituloPedido == libroSnap.val().titulo) {
-              idLibroPedido = libroSnap.key;
-            }
-
-            return false;
-          });
-        });
-        cantidad = (cantidad - 1);
-        const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
-        libroReference.update({
-          cantidad
-        });
-      }
+    if (tituloQueSeTiene == tituloPedido) {
+      this.mensaje.create({
+        message: "Ya tienes este titulo rentado",
+        position: 'middle',
+        duration: 3000
+      }).present();
+      console.log("Entraste a donde el titulo ya lo tienes ")
+      this.isAble = false;
 
     } else {
-      this.mensaje.create({
-        message: 'No tenemos libros en existencia, intenta mas tarde',
-        duration: 2000,
-        position: 'middle'
-      }).present();
 
+      this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
+
+
+        usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido });
+        this.mensaje.create({
+          message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
+          duration: 3000,
+          position: 'middle'
+        }).present();
+
+        this.localNotifications.schedule({
+          id: 1,
+          title: 'Nueva solicitud',
+          text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
+          sound: null,
+          icon: 'https://png.icons8.com/ios/1600/book-stack.png'
+        });
+      })
+
+      this.add_reminder(tituloPedido);
+
+      this.libroRef.on('value', libroSnapshot => {
+        libroSnapshot.forEach(libroSnap => {
+
+          if (tituloPedido == libroSnap.val().titulo) {
+            idLibroPedido = libroSnap.key;
+          }
+
+          return false;
+        });
+      });
+      cantidad = (cantidad - 1);
+      const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
+      libroReference.update({
+        cantidad
+      });
     }
 
-    
-  }
-
-
-  async logOut() {
-    await this.logOutService.logout();
-    let loading = this.loadingCtrl.create({
-      spinner: 'crescent',
-      content: "!Hasta Luego! Regresa Pronto"
-    });
-    loading.present();
-
-    setTimeout(() => {
-      this.navCtrl.setRoot(HomePage);
-      loading.dismiss();
-    }, 2000)
+  } else {
+    this.mensaje.create({
+      message: 'No tenemos libros en existencia, intenta mas tarde',
+      duration: 2000,
+      position: 'middle'
+    }).present();
 
   }
 
-  add_reminder(tituloPedido: string) {
 
-    var d = 0;
-
-    var Fecha = new Date();
-
-    var horas = Fecha.getHours();
-    var minutos = Fecha.getMinutes();
-    var mes = Fecha.getMonth();
-    var dia = Fecha.getDate();
-    if (mes < 10) { mes = <any>('0' + mes) };
-    if (dia < 10) { dia = <any>('0' + dia) };
-    if (horas < 10) { horas = <any>('0' + horas) };
-    if (minutos < 10) { minutos = <any>('0' + minutos) };
-    Fecha.setMinutes(minutos+2);
-
-    console.log(Fecha.toString());
-
-    this.localNotifications.schedule({
-      id: 1,
-      title: 'Recordatorio',
-      text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
-      sound: null,
-      at: new Date(Fecha),
-      icon: 'https://png.icons8.com/ios/1600/book-stack.png'
-    });
+}
 
 
-  }
+async logOut() {
+  await this.logOutService.logout();
+  let loading = this.loadingCtrl.create({
+    spinner: 'crescent',
+    content: "!Hasta Luego! Regresa Pronto"
+  });
+  loading.present();
+
+  setTimeout(() => {
+    this.navCtrl.setRoot(HomePage);
+    loading.dismiss();
+  }, 2000)
+
+}
+
+add_reminder(tituloPedido: string) {
+
+  var d = 0;
+
+  var Fecha = new Date();
+
+  var horas = Fecha.getHours();
+  var minutos = Fecha.getMinutes();
+  var mes = Fecha.getMonth();
+  var dia = Fecha.getDate();
+  if (mes < 10) { mes = <any>('0' + mes) };
+  if (dia < 10) { dia = <any>('0' + dia) };
+  if (horas < 10) { horas = <any>('0' + horas) };
+  if (minutos < 10) { minutos = <any>('0' + minutos) };
+  Fecha.setMinutes(minutos + 2);
+  this.schedule(Fecha);
+}
+
+schedule(fecha) {
+
+
+  this.localNotifications.schedule({
+    id: 2,
+    title: "Recordatorio",
+    text: "Recuerda regresar el libro",
+    at: fecha
+  });
+
+  var array = [fecha];
+  this.info.data[this.info.data.length] = array;
+  localStorage.setItem("rp_data", JSON.stringify(this.info));
+
+  alert("Reminder added successfully")
+}
 }
