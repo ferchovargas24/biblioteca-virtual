@@ -40,7 +40,6 @@ export class SesionPage {
   ionViewDidLoad() {
 
     this.initializeItems();
-    this.llenarMisLibros();
     var dia = this.Fecha.getDate();
     var mes = this.Fecha.getMonth() + 1;
     if (mes < 10) { mes = <any>('0' + mes) };
@@ -110,7 +109,7 @@ export class SesionPage {
     var idLibroPedido;
 
     if (cantidad > 0) {
-
+      this.llenarMisLibros();
       for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
         var tituloArreglo = this.misLibros[this.iterador];
         console.log(tituloArreglo);
@@ -119,7 +118,7 @@ export class SesionPage {
           var diaRenta = tituloArreglo.dia;
         }
       }
-
+      console.log(tituloQueSeTiene)
       if (tituloQueSeTiene == tituloPedido) {
         this.mensaje.create({
           message: "Ya tienes este titulo rentado",
@@ -140,6 +139,12 @@ export class SesionPage {
           if (dia < 10) { dia = <any>('0' + dia) };
           const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
           usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, anio });
+          this.mensaje.create({
+            message: 'Gracias por tu solicitud, pronto te llegara una notificación con el título pedido',
+            duration: 2000,
+            position: 'middle'
+          }).present();
+    
           var idIncrement;
           this.localNotifications.schedule({
             id: idIncrement++,
@@ -182,7 +187,7 @@ export class SesionPage {
     await this.logOutService.logout();
     let loading = this.loadingCtrl.create({
       spinner: 'crescent',
-      content: "!Hasta Luego! Regresa Pronto"
+      content: "¡Hasta Luego! Regresa Pronto"
     });
     loading.present();
 
@@ -196,7 +201,7 @@ export class SesionPage {
   add_reminder() {
 
     var d = 0;
-
+    this.llenarMisLibros();
     var horas = this.Fecha.getHours();
     var minutos = this.Fecha.getMinutes();
 
