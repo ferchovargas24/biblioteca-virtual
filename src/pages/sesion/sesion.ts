@@ -223,8 +223,8 @@ export class SesionPage {
           id: this.iterador,
           title: "Devuelve el libro a tiempo, evita cargos adicionales",
           text: "Te quedan: " + diasRestantes + " días," + tituloArreglo.tituloPedido,
-          icon: 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png',
-          smallIcon: 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png'
+          icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
+          smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
         });
 
       }
