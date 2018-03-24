@@ -17,7 +17,8 @@ export class SesionPage {
   public misLibros: Array<any> = [];
   public email: string;
   iterador: number;
-  public info = null;
+  Fecha = new Date();
+  public fechaEntrega;
   idUsuario;
   public isAble: boolean;
   public isInUse: boolean = false;
@@ -32,7 +33,7 @@ export class SesionPage {
     private loadingCtrl: LoadingController,
     private localNotifications: LocalNotifications
   ) {
-    menu.enable(true);
+
     this.email = navParams.get('email');
   }
 
@@ -40,6 +41,12 @@ export class SesionPage {
 
     this.initializeItems();
     this.llenarMisLibros();
+    var dia = this.Fecha.getDate();
+    var mes = this.Fecha.getMonth() + 1;
+    if (mes < 10) { mes = <any>('0' + mes) };
+    if (dia < 10) { dia = <any>('0' + dia) };
+    this.Fecha.setDate(dia + 1);
+    this.fechaEntrega = this.Fecha.getDate() + "/" + mes + "/" + this.Fecha.getFullYear()
     this.add_reminder();
   }
 
@@ -56,7 +63,7 @@ export class SesionPage {
   }
 
   openPage(pagina: string) {
-    this.navCtrl.push(pagina, { email: this.email });
+    this.navCtrl.push(pagina, { email: this.email, fechaEntrega: this.fechaEntrega });
   }
   getItems(ev) {
 
@@ -128,17 +135,14 @@ export class SesionPage {
           var fechaRentado = new Date();
           var dia = fechaRentado.getDate();
           var mes = fechaRentado.getMonth() + 1;
-          var año = fechaRentado.getFullYear();
+          var anio = fechaRentado.getFullYear();
+          if (mes < 10) { mes = <any>('0' + mes) };
+          if (dia < 10) { dia = <any>('0' + dia) };
           const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
-          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, año });
-          this.mensaje.create({
-            message: 'Se ha guargado tu pedido, ' + tituloPedido + ', recoge tu libro lo antes posible',
-            duration: 3000,
-            position: 'middle'
-          }).present();
-
+          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, anio });
+          var idIncrement;
           this.localNotifications.schedule({
-            id: 1,
+            id: idIncrement++,
             title: 'Nueva solicitud',
             text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
             sound: null,
@@ -192,35 +196,32 @@ export class SesionPage {
   add_reminder() {
 
     var d = 0;
-    var Fecha = new Date();
 
-    var horas = Fecha.getHours();
-    var minutos = Fecha.getMinutes();
-    var mes = Fecha.getMonth();
-    var dia = Fecha.getDate();
-    if (mes < 10) { mes = <any>('0' + mes) };
-    if (dia < 10) { dia = <any>('0' + dia) };
+    var horas = this.Fecha.getHours();
+    var minutos = this.Fecha.getMinutes();
+
+
     if (horas < 10) { horas = <any>('0' + horas) };
     if (minutos < 10) { minutos = <any>('0' + minutos) };
-    Fecha.setDate(dia + 1);
-    console.log(Fecha.getDate());
+    console.log(this.Fecha.getDate());
 
-    var idUsuario
     console.log(this.misLibros)
 
     for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
       var tituloArreglo = this.misLibros[this.iterador];
 
-      if ( ((Fecha.getDate() - tituloArreglo.dia) <= 1)) {
-       
-        var fechaEntrega = Fecha.getDate() - tituloArreglo.dia;
-        console.log("Ya hay que regresarlos" + fechaEntrega)
+      if (((this.Fecha.getDate() - tituloArreglo.dia) <= 1)) {
+        console.log("ya regresalos")
+        var diasRestantes = this.Fecha.getDate() - tituloArreglo.dia;
+        console.log("Ya hay que regresarlos" + diasRestantes)
         this.localNotifications.schedule({
           id: this.iterador,
           title: "Devuelve el libro a tiempo, evita cargos adicionales",
-          text: "Te quedan: " + fechaEntrega + " días," + tituloArreglo.tituloPedido,
-          smallIcon : 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png'
+          text: "Te quedan: " + diasRestantes + " días," + tituloArreglo.tituloPedido,
+          icon: 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png',
+          smallIcon: 'https://es.seaicons.com/wp-content/uploads/2015/10/Books-2-icon.png'
         });
+
       }
     }
   }

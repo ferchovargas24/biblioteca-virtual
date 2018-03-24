@@ -11,15 +11,18 @@ export class MisLibrosPage {
 
 public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
 email: string;
+fechaEntrega;
 public misLibros: Array<any> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
 this.email = navParams.get('email');
+this.fechaEntrega = navParams.get('fechaEntrega');
   }
 
   ionViewDidLoad() {
 
     this.mostrarMisLibros();
+    this.fechaEntrega;
   }
 
   mostrarMisLibros(){

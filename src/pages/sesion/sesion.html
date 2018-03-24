@@ -4,19 +4,21 @@
       <ion-icon name='menu'></ion-icon>
     </button>
     <ion-title>
-      Menu
+      LIBROS
     </ion-title>
   </ion-navbar>
+  
 </ion-header>
+
 
 <ion-content padding class="bg-image">
 
   <ion-menu [content]="mycontent">
     <ion-content>
       <ion-list>
-          <button ion-item (click)="openPage('MisLibrosPage')">
-              Mis libros
-            </button>
+        <button ion-item (click)="openPage('MisLibrosPage')">
+          Mis libros
+        </button>
         <button ion-item (click)="logOut()">
           Cerrar Sesión
         </button>
@@ -34,9 +36,9 @@
       <h2>{{libro.autor}}</h2>
       <p>{{libro.titulo}}</p>
       <p>Libros disponibles: {{libro.cantidad}}</p>
-      <button style="color:black;" ion-button small  clear  (click)="asignarLibros(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
+      <button style="color:black;" ion-button small clear (click)="asignarLibros(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
     </ion-item>
   </ion-list>
 
-  <button style="color:black;" ion-button small  clear  (click)="add_reminder()">Recibir Recordatorios</button>
+  <button style="color:black;" ion-button small full outline (click)="add_reminder()">Recibir Recordatorios</button>
 </ion-content>
