@@ -51,7 +51,7 @@ export class AddUserPage {
     setTimeout(() => {
 
       if (this.logingIn.isLogged == true && this.logingIn.isAdmin == false) {
-        this.navCtrl.setRoot(SesionPage,{email:this.usuario.email});
+        this.navCtrl.setRoot(SesionPage, { email: this.usuario.email });
 
         this.toastCtrl.create({
           message: `Bienvenido ${usuario.email}`,
@@ -59,10 +59,10 @@ export class AddUserPage {
         }).present();
 
       } else {
-        
+
 
         if (this.logingIn.isLogged == true && this.logingIn.isAdmin == true) {
-          this.navCtrl.setRoot(AdministradorPage);
+          this.navCtrl.setRoot(AdministradorPage, { email: this.usuario.email });
           this.toastCtrl.create({
             message: `Bienvenido administrador  ${usuario.email}`,
             duration: 3000

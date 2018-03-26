@@ -9,28 +9,25 @@ import firebase from 'firebase';
 })
 export class MisLibrosPage {
 
-public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
-email: string;
-fechaEntrega;
-public misLibros: Array<any> = [];
+  public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
+  email: string;
+  public misLibros: Array<any> = [];
 
   constructor(public navCtrl: NavController, public navParams: NavParams) {
-this.email = navParams.get('email');
-this.fechaEntrega = navParams.get('fechaEntrega');
+    this.email = navParams.get('email');
   }
 
   ionViewDidLoad() {
 
     this.mostrarMisLibros();
-    this.fechaEntrega;
   }
 
-  mostrarMisLibros(){
+  mostrarMisLibros() {
 
     var idUsuario;
     this.usuRef.on('value', usuarioSnapshot => {
       usuarioSnapshot.forEach(usuSnap => {
-        if(this.email == usuSnap.val().email){
+        if (this.email == usuSnap.val().email) {
           idUsuario = usuSnap.key
         }
         return false;
@@ -48,5 +45,5 @@ this.fechaEntrega = navParams.get('fechaEntrega');
       });
     });
   }
-  
+
 }

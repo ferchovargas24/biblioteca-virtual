@@ -18,8 +18,8 @@
       </ion-thumbnail>
       <h2>{{libro.autorPedido}}</h2>
       <p>{{libro.tituloPedido}}</p>
-      <p>Solicitado:</p><p> {{libro.dia}}/{{libro.mes}}/{{libro.anio}}</p>
-      <p>Entregar: </p> <p [innerHTML]= "fechaEntrega"></p>
+      <p>Solicitado:{{libro.dia}}/{{libro.mes}}/{{libro.anio}}</p>
+      <p>Entregar: {{libro.diaEntrega}}/{{libro.mes}}/{{libro.anio}}</p> 
     </ion-item>
    
   </ion-list>

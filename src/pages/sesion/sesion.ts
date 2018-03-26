@@ -62,7 +62,7 @@ export class SesionPage {
   }
 
   openPage(pagina: string) {
-    this.navCtrl.push(pagina, { email: this.email, fechaEntrega: this.fechaEntrega });
+    this.navCtrl.push(pagina, { email: this.email });
   }
   getItems(ev) {
 
@@ -135,16 +135,17 @@ export class SesionPage {
           var dia = fechaRentado.getDate();
           var mes = fechaRentado.getMonth() + 1;
           var anio = fechaRentado.getFullYear();
+          var diaEntrega = this.Fecha.getDate();
           if (mes < 10) { mes = <any>('0' + mes) };
           if (dia < 10) { dia = <any>('0' + dia) };
           const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
-          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, anio });
+          usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, anio, diaEntrega });
           this.mensaje.create({
             message: 'Gracias por tu solicitud, pronto te llegara una notificación con el título pedido',
             duration: 2000,
             position: 'middle'
           }).present();
-    
+
           var idIncrement;
           this.localNotifications.schedule({
             id: idIncrement++,
@@ -218,7 +219,6 @@ export class SesionPage {
       if (((this.Fecha.getDate() - tituloArreglo.dia) <= 1)) {
         console.log("ya regresalos")
         var diasRestantes = this.Fecha.getDate() - tituloArreglo.dia;
-        console.log("Ya hay que regresarlos" + diasRestantes)
         this.localNotifications.schedule({
           id: this.iterador,
           title: "Devuelve el libro a tiempo, evita cargos adicionales",

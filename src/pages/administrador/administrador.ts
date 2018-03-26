@@ -12,10 +12,14 @@ import { Usuario } from '../../app/Models/User/user.model';
 })
 export class AdministradorPage {
 
+  email: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
-              private logService: LoginServicio,
-              private loadingCtrl: LoadingController,
-              private mensaje: ToastController) {
+    private logService: LoginServicio,
+    private loadingCtrl: LoadingController,
+    private mensaje: ToastController) {
+
+    this.email = this.navParams.get('email')
+
   }
 
 
@@ -35,9 +39,9 @@ export class AdministradorPage {
 
   }
 
-  openPage(pagina: string){
+  openPage(pagina: string) {
     console.log(pagina);
-    this.navCtrl.push(pagina);
+    this.navCtrl.push(pagina, { email: this.email });
   }
 
 }
