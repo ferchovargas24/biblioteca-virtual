@@ -11,9 +11,9 @@
 <ion-content padding>
   <ion-item>
     <ion-label floating>Selecciona el libro a eliminar</ion-label>
-    <ion-select [(ngModel)]="libro">
+    <ion-select [(ngModel)]="libro" (click)="habilitaBoton()">
       <ion-option *ngFor="let libro of libros" [value]="libro">{{libro}}</ion-option>
     </ion-select>
   </ion-item>
-  <button id="botonBorrar" color="danger" ion-button outline full (click)="eliminarLibro(libro)" >Eliminar libro</button>
+  <button [disabled]="!isEnabled" color="primary" ion-button outline full (click)="mostrarOpciones(libro)" >Opciones</button>
 </ion-content>

@@ -4,7 +4,6 @@ import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
 import { LoginServicio } from '../../servicios/login/login.servicio';
-import { database } from 'firebase';
 import { AdministradorPage } from '../administrador/administrador';
 
 @IonicPage()

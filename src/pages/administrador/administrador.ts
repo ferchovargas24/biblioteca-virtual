@@ -1,9 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
-import firebase from 'firebase';
-import { Usuario } from '../../app/Models/User/user.model';
 
 @IonicPage()
 @Component({
@@ -15,8 +13,7 @@ export class AdministradorPage {
   email: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private logService: LoginServicio,
-    private loadingCtrl: LoadingController,
-    private mensaje: ToastController) {
+    private loadingCtrl: LoadingController, ) {
 
     this.email = this.navParams.get('email')
 

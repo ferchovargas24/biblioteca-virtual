@@ -1,0 +1,23 @@
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>historialpedidos</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+  <ion-list>
+    <ion-item id="listas" *ngFor="let libro of pedidos">
+      <ion-thumbnail item-start>
+        <img src="{{libro.libroImagenPedido}}">
+      </ion-thumbnail>
+      <h2>{{libro.autorPedido}}</h2>
+      <p>{{libro.tituloPedido}}</p>
+      <p>Rentado por: {{libro.currentEmail}}</p>
+    </ion-item>
+  </ion-list>
+
+</ion-content>

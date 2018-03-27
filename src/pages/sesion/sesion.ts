@@ -18,10 +18,7 @@ export class SesionPage {
   public email: string;
   iterador: number;
   Fecha = new Date();
-  public fechaEntrega;
   idUsuario;
-  public isAble: boolean;
-  public isInUse: boolean = false;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
   public usuRef: firebase.database.Reference = firebase.database().ref('/administradores');
@@ -45,7 +42,6 @@ export class SesionPage {
     if (mes < 10) { mes = <any>('0' + mes) };
     if (dia < 10) { dia = <any>('0' + dia) };
     this.Fecha.setDate(dia + 1);
-    this.fechaEntrega = this.Fecha.getDate() + "/" + mes + "/" + this.Fecha.getFullYear()
     this.add_reminder();
   }
 
@@ -105,7 +101,6 @@ export class SesionPage {
 
   asignarLibros(autorPedido: string, tituloPedido: string, libroImagenPedido: string, cantidad: number) {
 
-    var idUsuario;
     var idLibroPedido;
 
     if (cantidad > 0) {
@@ -115,7 +110,6 @@ export class SesionPage {
         console.log(tituloArreglo);
         if (tituloArreglo.tituloPedido == tituloPedido) {
           var tituloQueSeTiene = tituloArreglo.tituloPedido;
-          var diaRenta = tituloArreglo.dia;
         }
       }
       console.log(tituloQueSeTiene)
@@ -128,8 +122,8 @@ export class SesionPage {
 
 
       } else {
-
-        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido }).then(mensaje => {
+        var currentEmail = this.email
+        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido, currentEmail }).then(() => {
 
           var fechaRentado = new Date();
           var dia = fechaRentado.getDate();
@@ -201,7 +195,6 @@ export class SesionPage {
 
   add_reminder() {
 
-    var d = 0;
     this.llenarMisLibros();
     var horas = this.Fecha.getHours();
     var minutos = this.Fecha.getMinutes();

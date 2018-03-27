@@ -1,0 +1,32 @@
+<!--
+  Generated template for the ActualzarLibroPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Actualizar Libro</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <h1>Actualizando el Libro:</h1>
+    <br>
+    <h2>{{libro}}</h2>
+  </ion-item>
+
+  <ion-item>
+    <ion-label floating># Libros actual: {{cantidad}}</ion-label>
+    <ion-input type="number" [(ngModel)] = "cantidad"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label floating>Link de imagen actual: {{imagen}}</ion-label>
+    <ion-input type="text" [(ngModel)] = "imagen"></ion-input>
+  </ion-item>
+  <button color="primary" ion-button outline full (click)="actualizarLibro(cantidad, imagen)" >Actualizar libro</button>
+</ion-content>

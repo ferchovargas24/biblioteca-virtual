@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, ToastController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
 import firebase from 'firebase'
+import { ActualzarLibroPage } from '../actualzar-libro/actualzar-libro';
 
 
 @IonicPage()
@@ -12,10 +13,12 @@ export class EliminarLibroDeBasePage {
 
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   libros: Array<any> = [];
-
-  constructor(public navCtrl: NavController, public navParams: NavParams, 
-      private alertCtrl: AlertController,
-    private mensaje : ToastController) {
+  libro;
+  isEnabled: boolean =false;
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private alertCtrl: AlertController,
+    private mensaje: ToastController,
+    private actionSheetCtrl : ActionSheetController) {
   }
 
   ionViewDidLoad() {
@@ -30,6 +33,44 @@ export class EliminarLibroDeBasePage {
       });
     });
   }
+  
+
+  habilitaBoton(){
+    console.log("Si da click" + this.isEnabled)
+    this.isEnabled=true;
+  }
+  mostrarOpciones(libro) {
+
+    let actionSheet = this.actionSheetCtrl.create({
+      title: 'Que quieres hacer?',
+      buttons: [
+        {
+          text: 'Borrar Libro',
+          role: 'destructive',
+          handler: () => {
+            this.eliminarLibro(libro);
+          }
+        },{
+          text: 'Actualizar libro',
+          handler: () => {
+            this.libro = libro;
+            this.actualizarLibro();
+          }
+        },{
+          text: 'Cancel',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        }
+      ]
+    });
+    actionSheet.present();
+  }
+
+  actualizarLibro(){
+    this.navCtrl.push("ActualzarLibroPage",{libro: this.libro});
+  }
 
   eliminarLibro(libro) {
 
@@ -40,11 +81,8 @@ export class EliminarLibroDeBasePage {
       message: '¿Quieres eliminar el libro?',
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
-          handler: () => {
-            console.log('Cancel clicked');
-          }
         },
         {
           text: 'Eliminar',
@@ -58,12 +96,13 @@ export class EliminarLibroDeBasePage {
               });
             });
 
-            this.libroRef.child(idLibroEliminar).remove().then(mensaje=>{
+            this.libroRef.child(idLibroEliminar).remove().then(mensaje => {
               this.mensaje.create({
                 message: "Libro eliminado",
                 duration: 2000
               }).present();
             })
+            this.llenarLibros();
           }
         }
       ]
