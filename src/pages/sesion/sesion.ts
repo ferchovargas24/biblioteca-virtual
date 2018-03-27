@@ -209,18 +209,30 @@ export class SesionPage {
     for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
       var tituloArreglo = this.misLibros[this.iterador];
 
-      if (((this.Fecha.getDate() - tituloArreglo.dia) <= 1)) {
-        console.log("ya regresalos")
-        var diasRestantes = this.Fecha.getDate() - tituloArreglo.dia;
+      if ( (( tituloArreglo.diaEntrega - (this.Fecha.getDate()-1)) == 1) && tituloArreglo.mes == (this.Fecha.getMonth()+1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
+        console.log("ya regresalos")        
         this.localNotifications.schedule({
           id: this.iterador,
           title: "Devuelve el libro a tiempo, evita cargos adicionales",
-          text: "Te quedan: " + diasRestantes + " días," + tituloArreglo.tituloPedido,
+          text: "Te queda 1 día, entrega:" + tituloArreglo.tituloPedido,
           icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
           smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
         });
 
+      }else{
+        if((( tituloArreglo.diaEntrega - (this.Fecha.getDate()-1)) <=0) && tituloArreglo.mes == (this.Fecha.getMonth()+1) && tituloArreglo.anio == this.Fecha.getFullYear()){
+          console.log("Se agotó el tiempo")
+          this.localNotifications.schedule({
+            id: this.iterador,
+            title: "Se cargaran cargos de $5 por día",
+            text: "No has entregado:" + tituloArreglo.tituloPedido,
+            icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
+            smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
+          });
+        }
       }
+      
+  
     }
   }
 }
