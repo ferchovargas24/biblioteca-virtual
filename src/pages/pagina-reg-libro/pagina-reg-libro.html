@@ -1,40 +1,43 @@
 <ion-header no-border>
 
   <ion-navbar transparent>
-      <ion-title>
-          Guardar Libro
-      </ion-title>
+    <ion-title>
+      Guardar Libro
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
 <ion-content padding class="bg-image">
+
+  <form [formGroup]="formgroup">
     <ion-list>
 
-    <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">Autor</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="autor"></ion-input>
-    </ion-item>
+      <ion-item style="font-size: 14px;background:none;" >
+        <ion-label floating style="color:white">Autor</ion-label>
+        <ion-input  style="color:white;border-bottom-color:white;box-shadow:none;" type="text" formControlName="autorNuevo" [(ngModel)]="autor"></ion-input>
+      </ion-item>
 
-    <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">titulo</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="titulo"></ion-input>
-    </ion-item>
+      <ion-item style="font-size: 14px;background:none;" >
+        <ion-label floating style="color:white">titulo</ion-label>
+        <ion-input formControlName="tituloNuevo" style="color:white;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="titulo"></ion-input>
+      </ion-item>
 
-    <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">Imagen (URL)</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="imagen"></ion-input>
-    </ion-item>
+      <ion-item style="font-size: 14px;background:none;">
+        <ion-label floating style="color:white">Imagen (URL)</ion-label>
+        <ion-input formControlName="imagenNuevo" style="color:white;border-bottom-color:white;box-shadow:none;" type="text" [(ngModel)]="imagen"></ion-input>
+      </ion-item>
 
-    <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">Cantidad</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="number" [(ngModel)]="cantidad"></ion-input>
-    </ion-item>
-  </ion-list>
+      <ion-item style="font-size: 14px;background:none;">
+        <ion-label floating style="color:white">Cantidad</ion-label>
+        <ion-input formControlName="cantidadNuevo" style="color:white;border-bottom-color:white;box-shadow:none;" type="number" [(ngModel)]="cantidad"></ion-input>
+      </ion-item>
+    </ion-list>
 
-  <button ion-button style=" color:white; margin-top: 15px;height: 35px;font-size: 14px;background-color: transparent;border:1px solid white"
-    clear block (click)="createBook(autor, titulo,imagen, cantidad)">
-    Guardar Libro
-  </button>
+    <button ion-button style=" color:white; margin-top: 15px;height: 35px;font-size: 14px;background-color: transparent;border:1px solid white"
+      clear block [disabled]="!formgroup.valid" (click)="createBook(autor, titulo,imagen, cantidad)">
+      Guardar Libro
+    </button>
+  </form>
 </ion-content>

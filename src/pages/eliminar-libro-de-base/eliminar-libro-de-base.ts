@@ -1,8 +1,6 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, AlertController, ToastController, ActionSheetController } from 'ionic-angular';
 import firebase from 'firebase'
-import { ActualzarLibroPage } from '../actualzar-libro/actualzar-libro';
-
 
 @IonicPage()
 @Component({
