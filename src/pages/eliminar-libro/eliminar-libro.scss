@@ -1,3 +1,14 @@
 page-eliminar-libro {
+    .bg-image{
+        background-image: url('../assets/imgs/fondoBueno.png');
+        background-repeat: no-repeat;
+        background-position: unset;
+        background-size: cover;
+        background-attachment: fixed;
+    }
 
+    .item-content {
+        background-color: transparent;
+      }
+    
 }

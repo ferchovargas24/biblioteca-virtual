@@ -1,26 +1,30 @@
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar transparent>
     <ion-title>Entrega de libros</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-    <ion-label floating>Selecciona un usuario</ion-label>
-    <ion-select [(ngModel)]="usuario">
+<ion-content padding class="bg-image">
+  <ion-item class="item-content">
+    <ion-label floating style="color:white">Selecciona un usuario</ion-label>
+    <ion-select  [(ngModel)]="usuario"  style="color:white">
       <ion-option *ngFor="let usuario of usuarios" [value]="usuario">{{usuario}}</ion-option>
     </ion-select>
   </ion-item>
-  <button ion-button color="secondary" outline full (click)="librosDelUsuario(usuario)">Buscar sus libros</button>
+  <br>
+  <br>
+  <button ion-button color="blanco" outline block (click)="librosDelUsuario(usuario)">Buscar sus libros</button>
 
-  <ion-item>
-    <ion-label floating>Selecciona el libro a eliminar</ion-label>
-    <ion-select [(ngModel)]="libro">
+  <ion-item class="item-content">
+    <ion-label floating style="color:white">Selecciona el libro que está entregando</ion-label>
+    <ion-select [(ngModel)]="libro" style="color:white">
       <ion-option *ngFor="let libro of misLibros" [value]="libro">{{libro}}</ion-option>
     </ion-select>
   </ion-item>
-  <button id="botonBorrar" color="danger" ion-button outline full (click)="eliminarLibro(libro)" >Eliminar libro</button>
+  <br>
+  <br>
+  <button ion-button color="blanco" outline  block (click)="eliminarLibro(libro)" >Entregar Libro</button>
 </ion-content>

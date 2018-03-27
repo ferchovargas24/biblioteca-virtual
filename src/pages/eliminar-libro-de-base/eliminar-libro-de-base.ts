@@ -27,6 +27,7 @@ export class EliminarLibroDeBasePage {
 
   llenarLibros() {
     this.libroRef.on('value', libroSnapshot => {
+      this.libros=[];
       libroSnapshot.forEach(libroSnap => {
         this.libros.push(libroSnap.val().titulo)
         return false;

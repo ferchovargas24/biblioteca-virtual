@@ -5,9 +5,10 @@ page-sesion {
         background-size: cover;
       }
       .bg-image{
-        background-image: url('../assets/imgs/fondo3.png');
+        background-image: url('../assets/imgs/fondoBueno.png');
         background-repeat: no-repeat;
         background-position: unset;
         background-size: cover;
+        background-attachment: fixed;
     }
 }

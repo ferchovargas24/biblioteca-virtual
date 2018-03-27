@@ -1,19 +1,21 @@
 
-<ion-header>
+<ion-header no-border>
 
-  <ion-navbar>
+  <ion-navbar transparent>
     <ion-title>Eliminar Libro</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
-  <ion-item>
-    <ion-label floating>Selecciona el libro a eliminar</ion-label>
-    <ion-select [(ngModel)]="libro" (click)="habilitaBoton()">
+<ion-content padding class="bg-image">
+  <ion-item class="item-content">
+    <ion-label floating style="color:white">Selecciona libro a eliminar o actualizar</ion-label>
+    <ion-select [(ngModel)]="libro" (click)="habilitaBoton()" style="color:white">
       <ion-option *ngFor="let libro of libros" [value]="libro">{{libro}}</ion-option>
     </ion-select>
   </ion-item>
-  <button [disabled]="!isEnabled" color="primary" ion-button outline full (click)="mostrarOpciones(libro)" >Opciones</button>
+  <br>
+  <br>
+  <button [disabled]="!isEnabled" color="blanco" outline  block ion-button  (click)="mostrarOpciones(libro)" >Opciones</button>
 </ion-content>
