@@ -18,7 +18,6 @@ export class LoginServicio {
     ) { }
 
 
-
     llenarUsuarios() {
 
         this.usuRef.on('value', usuarioSnapshot => {
@@ -77,44 +76,45 @@ export class LoginServicio {
 
 
     async loginUser(usuario: Usuario) {
-
-
+        
         this.llenarUsuarios();
+
         setTimeout(() => {
             this.afauth.auth.signInWithEmailAndPassword(usuario.email, usuario.pass)
                 .then(evento => {
 
-
                     console.log(usuario.email);
                     console.log(usuario.pass);
-
-                    for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
-                        var numero1 = this.usuarios[this.iterador];
-
-                        if (numero1.email == usuario.email && numero1.pass == usuario.pass) {
-
-                            if (numero1.admin == 1) {
-                                this.isLogged = true;
-                                this.isAdmin = true;
-                                console.log(this.isAdmin);
-
-                            } else {
-                                this.isLogged = true;
-                                this.isAdmin = false;
-                                console.log(this.isAdmin);
-
-                            }
-
-                        }
-
-                    }
-
 
                 }).catch((FirebaseAuthException) => {
                     this.isLogged = false;
                     console.log(this.isLogged);
                 });
-        }, 1000)
+        }, 2000)
+
+        setTimeout(() => {
+            for (this.iterador = 0; this.iterador < this.usuarios.length; this.iterador++) {
+                var numero1 = this.usuarios[this.iterador];
+    
+                if (numero1.email == usuario.email && numero1.pass == usuario.pass) {
+    
+                    if (numero1.admin == 1) {
+                        this.isLogged = true;
+                        this.isAdmin = true;
+                        console.log(this.isAdmin);
+    
+                    } else {
+                        this.isLogged = true;
+                        this.isAdmin = false;
+                        console.log(this.isAdmin);
+    
+                    }
+    
+                }
+    
+            }
+        }, 1000);
+ 
 
     };
 

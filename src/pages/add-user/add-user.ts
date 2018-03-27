@@ -49,6 +49,8 @@ export class AddUserPage {
 
     setTimeout(() => {
 
+      console.log(this.logingIn.isLogged)
+      console.log(this.logingIn.isAdmin)
       if (this.logingIn.isLogged == true && this.logingIn.isAdmin == false) {
         this.navCtrl.setRoot(SesionPage, { email: this.usuario.email });
 

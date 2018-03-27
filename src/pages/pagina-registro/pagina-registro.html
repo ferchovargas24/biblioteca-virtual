@@ -1,30 +1,79 @@
 <ion-header no-border>
 
   <ion-navbar transparent>
-      <ion-title>
-          Registro
-      </ion-title>
+    <ion-title>
+      Registro
+    </ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-  <ion-content padding class="bg-image">
+<ion-content padding class="bg-image">
 
+  <form [formGroup]="formgroup">
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
     <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">Usuario</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="email"  [(ngModel)]="usuario.email"></ion-input>
+      <ion-label floating style="color:white">Usuario *</ion-label>
+      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="email" formControlName="emailUsu" [(ngModel)]="usuario.email"></ion-input>
     </ion-item>
 
+    <h6 *ngIf="(formgroup.controls.emailUsu.hasError('required') && formgroup.controls.emailUsu.touched)" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      El email es requerido
+    </h6>
+
+    <h6 *ngIf="(formgroup.controls.emailUsu.hasError('maxlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      El email debe contener menos de 70 caracteres
+    </h6>
+
+    <h6 *ngIf="(formgroup.controls.emailUsu.hasError('pattern'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      Estructura bien tu email
+    </h6>
+
+
+
     <ion-item style="font-size: 14px;background:none;">
-      <ion-label floating style="color:white">Contraseña</ion-label>
-      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="password"  [(ngModel)]="usuario.pass"></ion-input>
+      <ion-label floating style="color:white">Contraseña *</ion-label>
+      <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="password" formControlName="passwordUsu" [(ngModel)]="usuario.pass"></ion-input>
     </ion-item>
 
-    <ion-item style="font-size: 14px;background:none;">
-        <ion-label  style="color:white" >Administardor</ion-label>
-        <ion-checkbox [(ngModel)]="admin"></ion-checkbox>
-      </ion-item>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('required') && formgroup.controls.passwordUsu.touched)" align="center"
+      style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña es requerido
+    </h6>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('minlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña debe tener 6 caracteres como mínimo
+    </h6>
 
-      <button ion-button style="color: white;" clear block  (click)="registarUsuario(usuario); registrarEnBase(usuario,admin)">Registrar</button>
-  </ion-content>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('pattern'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      Solo se aceptan caracteres a-z,1-15,A-Z sin caracteres especiales
+    </h6>
+
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('maxlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña debe ser máximo de 15 caracteres
+    </h6>
+
+  </form>
+  <ion-item style="font-size: 14px;background:none;">
+    <ion-label style="color:white">Administardor</ion-label>
+    <ion-checkbox [(ngModel)]="admin"></ion-checkbox>
+  </ion-item>
+
+  <button ion-button style="color: white;" clear block (click)="registarUsuario(usuario); registrarEnBase(usuario,admin)">Registrar</button>
+
+</ion-content>
