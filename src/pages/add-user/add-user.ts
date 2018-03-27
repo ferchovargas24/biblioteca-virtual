@@ -28,7 +28,7 @@ export class AddUserPage {
 
     this.formgroup = fb.group({
       emailUsu: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$'), Validators.required])],
-      passwordUsu: ['',Validators.compose([Validators.minLength(6),Validators.maxLength(14), Validators.pattern('[A-Za-z0-9]') ,Validators.required]) ],
+      passwordUsu: ['',Validators.compose([Validators.minLength(6),Validators.maxLength(14), Validators.pattern('[a-zA-Z0-9]*') ,Validators.required]) ],
     });
 
 

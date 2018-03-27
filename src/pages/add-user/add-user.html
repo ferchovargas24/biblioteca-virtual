@@ -46,6 +46,11 @@
       <ion-label floating style="color:white">Contraseña *</ion-label>
       <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="password" formControlName="passwordUsu" [(ngModel)]="usuario.pass"></ion-input>
     </ion-item>
+
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('required') && formgroup.controls.passwordUsu.touched)" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+        <ion-icon name="ios-alert-outline"></ion-icon>
+        La contraseña es requerido
+      </h6>
     <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('minlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
         <ion-icon name="ios-alert-outline"></ion-icon>
         La contraseña debe tener 6 caracteres como mínimo
