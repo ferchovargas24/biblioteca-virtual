@@ -27,7 +27,10 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{
+      scrollPadding: false,
+      scrollAssist: false
+    }),
     AngularFireModule.initializeApp(FireBase_Config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,

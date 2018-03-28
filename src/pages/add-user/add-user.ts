@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController} from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
@@ -34,7 +34,6 @@ export class AddUserPage {
 
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
-
   }
 
   async login(usuario: Usuario) {
