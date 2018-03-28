@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, MenuController, LoadingController } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import firebase from 'firebase';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
@@ -26,7 +26,6 @@ export class SesionPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private mensaje: ToastController,
     private logOutService: LoginServicio,
-    private menu: MenuController,
     private loadingCtrl: LoadingController,
     private localNotifications: LocalNotifications
   ) {

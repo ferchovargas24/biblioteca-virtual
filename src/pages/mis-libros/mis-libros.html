@@ -12,14 +12,14 @@
 
 
   <ion-list>
-    <ion-item *ngFor="let libro of misLibros">
+    <ion-item id="listas" *ngFor="let libro of misLibros">
       <ion-thumbnail item-start>
         <img src="{{libro.libroImagenPedido}}">
       </ion-thumbnail>
-      <h2>{{libro.autorPedido}}</h2>
-      <p>{{libro.tituloPedido}}</p>
-      <p>Solicitado:{{libro.dia}}/{{libro.mes}}/{{libro.anio}}</p>
-      <p>Entregar: {{libro.diaEntrega}}/{{libro.mes}}/{{libro.anio}}</p> 
+      <h2 style="color:white">{{libro.autorPedido}}</h2>
+      <p style="color:white">{{libro.tituloPedido}}</p>
+      <p style="color:white">Solicitado:{{libro.dia}}/{{libro.mes}}/{{libro.anio}}</p>
+      <p style="color:white">Entregar: {{libro.diaEntrega}}/{{libro.mes}}/{{libro.anio}}</p> 
     </ion-item>
    
   </ion-list>

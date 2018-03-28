@@ -43,7 +43,8 @@ export class AddUserPage {
     await this.logingIn.loginUser(usuario);
 
     let loading = this.loadingCtrl.create({
-      spinner: 'crescent'
+      spinner: 'dots',
+      content:"Iniciando"
     });
     loading.present();
 
@@ -77,6 +78,6 @@ export class AddUserPage {
         }
       }
       loading.dismiss();
-    }, 2000)
+    }, 4000)
   }
 }

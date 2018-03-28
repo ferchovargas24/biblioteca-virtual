@@ -1,19 +1,19 @@
 <ion-header no-border>
   <ion-navbar transparent>
-    <button ion-button menuToggle icon-only>
-      <ion-icon name='menu'></ion-icon>
-    </button>
     <ion-title>
       LIBROS
     </ion-title>
+    <button ion-button menuToggle >
+      <ion-icon icon-end name='menu'></ion-icon>
+    </button>
   </ion-navbar>
-  
+
 </ion-header>
 
 
 <ion-content padding class="bg-image">
 
-  <ion-menu [content]="mycontent">
+  <ion-menu type="overlay"  [content]="mycontent">
     <ion-content>
       <ion-list>
         <button ion-item (click)="openPage('MisLibrosPage')">
@@ -33,12 +33,12 @@
       <ion-thumbnail item-start>
         <img src="{{libro.imagen}}">
       </ion-thumbnail>
-      <h2>{{libro.autor}}</h2>
-      <p>{{libro.titulo}}</p>
-      <p>Libros disponibles: {{libro.cantidad}}</p>
+      <h2 style="color:white">{{libro.autor}}</h2>
+      <p style="color:white">{{libro.titulo}}</p>
+      <p style="color:white">Libros disponibles: {{libro.cantidad}}</p>
       <button style="color:white;" ion-button small clear (click)="asignarLibros(libro.autor, libro.titulo, libro.imagen, libro.cantidad)">Solicitar préstamo</button>
     </ion-item>
   </ion-list>
 
-  <button style="color:white;" ion-button small full outline (click)="add_reminder()">Recibir Recordatorios</button>
+  <button style=" color:white; margin-top: 15px;height: 35px;font-size: 14px;background-color: transparent;border:1px solid white" ion-button block  (click)="add_reminder()">Recibir Recordatorios</button>
 </ion-content>
