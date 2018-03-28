@@ -28,7 +28,7 @@ import { Keyboard } from '@ionic-native/keyboard';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp),
+    IonicModule.forRoot(MyApp,{scrollAssist: false, autoFocusAssist: false }),
     AngularFireModule.initializeApp(FireBase_Config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
