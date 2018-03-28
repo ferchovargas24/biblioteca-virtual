@@ -5,6 +5,8 @@ import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/fo
 import { SesionPage } from '../sesion/sesion';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { AdministradorPage } from '../administrador/administrador';
+import firebase from 'firebase'
+import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
 @Component({
@@ -24,6 +26,7 @@ export class AddUserPage {
     public fb: FormBuilder,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
+    private keyboard : Keyboard
   ) {
 
     this.formgroup = fb.group({
@@ -34,7 +37,10 @@ export class AddUserPage {
 
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
+
+    this.keyboard.disableScroll(true);
   }
+
 
   async login(usuario: Usuario) {
 

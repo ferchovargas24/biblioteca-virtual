@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
@@ -27,10 +27,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp,{
-      scrollPadding: false,
-      scrollAssist: false
-    }),
+    IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FireBase_Config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
@@ -51,7 +48,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     MensajeServicio,
     LoginServicio,
     MejoraContraseñaServicio,
-    LocalNotifications
+    LocalNotifications,
   ]
 })
 export class AppModule { }
