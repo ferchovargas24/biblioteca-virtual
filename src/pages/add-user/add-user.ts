@@ -38,7 +38,7 @@ export class AddUserPage {
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
 
-    this.keyboard.disableScroll(true)
+    this.keyboard.disableScroll(false)
   }
 
 
