@@ -10,7 +10,7 @@
 
 <ion-content padding class="bg-image">
 
-  <form [formGroup]="formgroup" >
+  <form [formGroup]="formgroup">
     <br>
     <br>
     <br>
@@ -47,26 +47,27 @@
       <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="password" formControlName="passwordUsu" [(ngModel)]="usuario.pass"></ion-input>
     </ion-item>
 
-    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('required') && formgroup.controls.passwordUsu.touched)" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
-        <ion-icon name="ios-alert-outline"></ion-icon>
-        La contraseña es requerido
-      </h6>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('required') && formgroup.controls.passwordUsu.touched)" align="center"
+      style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña es requerido
+    </h6>
     <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('minlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
-        <ion-icon name="ios-alert-outline"></ion-icon>
-        La contraseña debe tener 6 caracteres como mínimo
-      </h6>
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña debe tener 6 caracteres como mínimo
+    </h6>
 
-      <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('pattern'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
-          <ion-icon name="ios-alert-outline"></ion-icon>
-          Solo se aceptan caracteres a-z,1-15,A-Z sin caracteres especiales
-        </h6>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('pattern'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      Solo se aceptan caracteres a-z,1-15,A-Z sin caracteres especiales
+    </h6>
 
-        <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('maxlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
-            <ion-icon name="ios-alert-outline"></ion-icon>
-            La contraseña debe ser máximo de 15 caracteres
-          </h6>
+    <h6 *ngIf="(formgroup.controls.passwordUsu.hasError('maxlength'))" align="center" style="color:rgb(201, 49, 49);font-size: 13px">
+      <ion-icon name="ios-alert-outline"></ion-icon>
+      La contraseña debe ser máximo de 15 caracteres
+    </h6>
   </form>
 </ion-content>
 <ion-footer color="primary" class="footer">
-    <button ion-button style="color: white;" clear block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
-  </ion-footer>
+  <button ion-button style="color: white;" clear block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
+</ion-footer>
