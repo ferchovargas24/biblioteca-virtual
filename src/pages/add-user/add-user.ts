@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController, Platform} from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
@@ -26,7 +26,8 @@ export class AddUserPage {
     public fb: FormBuilder,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    public keyboard : Keyboard
+    public keyboard : Keyboard,
+    private platform : Platform
   ) {
 
     this.formgroup = fb.group({
@@ -38,7 +39,10 @@ export class AddUserPage {
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
 
-    this.keyboard.disableScroll(false)
+    this.platform.ready().then(() => {
+     this.keyboard.disableScroll(true);
+    });
+    
   }
 
 
