@@ -8,7 +8,7 @@
 
 
 
-<ion-content padding class="bg-image" >
+<ion-content padding class="bg-image" scroll="false" >
 
   <form [formGroup]="formgroup">
     <br>
@@ -67,7 +67,7 @@
       La contraseña debe ser máximo de 15 caracteres
     </h6>
   </form>
+  <ion-footer color="primary" class="footer">
+    <button class="footer" ion-button style="color: white;" clear block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
+  </ion-footer>
 </ion-content>
-<ion-footer color="primary" class="footer">
-  <button class="footer" ion-button style="color: white;" clear block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
-</ion-footer>
