@@ -4,12 +4,13 @@ page-add-user{
         background-repeat: no-repeat;
         background-position: initial;
         background-size: cover;
-        position: fixed;
+        background-attachment: fixed !important;
+        position: fixed !important;
     }
 
-    #footer{
+    .footer{
 
-        position: fixed;
+        position: fixed !important;
     } 
 
     #alertas{
