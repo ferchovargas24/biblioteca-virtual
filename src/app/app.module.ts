@@ -15,6 +15,7 @@ import { HomePage } from '../pages/home/home';
 import { SesionPage } from '../pages/sesion/sesion';
 import { AdministradorPage} from '../pages/administrador/administrador';
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { Keyboard } from '@ionic-native/keyboard';
 
 
 
@@ -49,6 +50,7 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
     LoginServicio,
     MejoraContraseñaServicio,
     LocalNotifications,
+    Keyboard
   ]
 })
 export class AppModule { }
