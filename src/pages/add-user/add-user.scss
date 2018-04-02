@@ -2,9 +2,11 @@ page-add-user{
     .bg-image{
         background-image: url('../assets/imgs/fondoBueno.png');
         background-repeat: no-repeat;
-        background-position: unset;
+        background-position: initial ;
         background-size: cover;
-        background-attachment: fixed;
+        background-attachment: initial !important;
+        position: initial !important;
+        scroll-behavior: initial;
     }
 
     #alertas{

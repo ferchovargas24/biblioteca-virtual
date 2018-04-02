@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController } from 'ionic-angular';
 import firebase from 'firebase';
 
 
@@ -17,8 +17,9 @@ export class EliminarLibroPage {
   usuarios: Array<any> = [];
   idUsuarioLibro;
   currentUser;
-  
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+    private mensaje: ToastController) {
 
   }
 
@@ -86,7 +87,10 @@ export class EliminarLibroPage {
     });
 
     usuarioReference.child(libroId).remove();
-
+    this.mensaje.create({
+      message: "Libro entregado, gracias",
+      duration: 3000
+    }).present();
     this.libroRef.on('value', libroSnapshot => {
       libroSnapshot.forEach(libroSnap => {
 

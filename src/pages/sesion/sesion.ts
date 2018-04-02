@@ -3,7 +3,9 @@ import { IonicPage, NavController, NavParams, ToastController, LoadingController
 import firebase from 'firebase';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
+
 import { LocalNotifications } from '@ionic-native/local-notifications';
+import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 
 @IonicPage()
 @Component({
@@ -18,6 +20,7 @@ export class SesionPage {
   public email: string;
   iterador: number;
   Fecha = new Date();
+  Fecha2 = new Date();
   idUsuario;
   public libroRef: firebase.database.Reference = firebase.database().ref('/libros');
   public pedidoRef: firebase.database.Reference = firebase.database().ref('/pedidos');
@@ -27,7 +30,8 @@ export class SesionPage {
     private mensaje: ToastController,
     private logOutService: LoginServicio,
     private loadingCtrl: LoadingController,
-    private localNotifications: LocalNotifications
+    private notificacion: LocalNotifications,
+    private notificando: PhonegapLocalNotification,
   ) {
 
     this.email = navParams.get('email');
@@ -103,6 +107,7 @@ export class SesionPage {
     var idLibroPedido;
 
     if (cantidad > 0) {
+
       this.llenarMisLibros();
       for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
         var tituloArreglo = this.misLibros[this.iterador];
@@ -111,7 +116,9 @@ export class SesionPage {
           var tituloQueSeTiene = tituloArreglo.tituloPedido;
         }
       }
+
       console.log(tituloQueSeTiene)
+
       if (tituloQueSeTiene == tituloPedido) {
         this.mensaje.create({
           message: "Ya tienes este titulo rentado",
@@ -122,7 +129,7 @@ export class SesionPage {
 
       } else {
         var currentEmail = this.email
-        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido, currentEmail }).then(() => {
+        this.pedidoRef.push({ autorPedido, tituloPedido, libroImagenPedido, currentEmail }).then(evento => {
 
           var fechaRentado = new Date();
           var dia = fechaRentado.getDate();
@@ -133,6 +140,7 @@ export class SesionPage {
           if (dia < 10) { dia = <any>('0' + dia) };
           const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
           usuarioReference.push({ autorPedido, tituloPedido, libroImagenPedido, dia, mes, anio, diaEntrega });
+
           this.mensaje.create({
             message: 'Gracias por tu solicitud, pronto te llegara una notificación con el título pedido',
             duration: 2000,
@@ -140,98 +148,115 @@ export class SesionPage {
           }).present();
 
           var idIncrement;
-          this.localNotifications.schedule({
-            id: idIncrement++,
-            title: 'Nueva solicitud',
-            text: 'Has solicitado el libro: ' + tituloPedido + " Recuerda recogerlo en tu campus lo antes posible",
-            sound: null,
-            icon: 'https://png.icons8.com/ios/1600/book-stack.png'
-          });
-        })
-
-        this.libroRef.on('value', libroSnapshot => {
-          libroSnapshot.forEach(libroSnap => {
-
-            if (tituloPedido == libroSnap.val().titulo) {
-              idLibroPedido = libroSnap.key;
+          this.notificando.requestPermission().then(permission => {
+            if (permission == 'granted') {
+              this.notificando.requestPermission().then(permiso=>{
+                if (permission =='granted') {
+                  this.notificando.create('Aviso', {
+                    tag: 'Nueva petición',
+                    body: 'Has solicitado: ' + tituloPedido,
+                    icon: 'https://thumbs.dreamstime.com/b/icono-o-s%C3%ADmbolo-de-los-libros-6649973.jpg'
+                  });
+    
+                }
+              })
+             
             }
-
-            return false;
           });
-        });
-        cantidad = (cantidad - 1);
-        const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
-        libroReference.update({
-          cantidad
+          this.libroRef.on('value', libroSnapshot => {
+            libroSnapshot.forEach(libroSnap => {
+
+              if (tituloPedido == libroSnap.val().titulo) {
+                idLibroPedido = libroSnap.key;
+              }
+
+              return false;
+            });
+          });
+
+          cantidad = (cantidad - 1);
+          const libroReference: firebase.database.Reference = firebase.database().ref(`/libros/` + idLibroPedido);
+          libroReference.update({
+            cantidad
+          });
+
         });
       }
 
-    } else {
-      this.mensaje.create({
-        message: 'No tenemos libros en existencia, intenta mas tarde',
-        duration: 2000,
-        position: 'middle'
-      }).present();
+      } else {
+        this.mensaje.create({
+          message: 'No tenemos libros en existencia, intenta mas tarde',
+          duration: 2000,
+          position: 'middle'
+        }).present();
+
+      }
+    }
+
+
+
+    async logOut() {
+      await this.logOutService.logout();
+      let loading = this.loadingCtrl.create({
+        spinner: 'crescent',
+        content: "¡Hasta Luego! Regresa Pronto"
+      });
+      loading.present();
+
+      setTimeout(() => {
+        this.navCtrl.setRoot(HomePage);
+        loading.dismiss();
+      }, 2000)
 
     }
-  }
+
+    add_reminder() {
+
+      this.llenarMisLibros();
+      var horas = this.Fecha.getHours();
+      var minutos = this.Fecha.getMinutes();
 
 
-  async logOut() {
-    await this.logOutService.logout();
-    let loading = this.loadingCtrl.create({
-      spinner: 'crescent',
-      content: "¡Hasta Luego! Regresa Pronto"
-    });
-    loading.present();
+      if (horas < 10) { horas = <any>('0' + horas) };
+      if (minutos < 10) { minutos = <any>('0' + minutos) };
+      console.log(this.Fecha.getDate());
 
-    setTimeout(() => {
-      this.navCtrl.setRoot(HomePage);
-      loading.dismiss();
-    }, 2000)
+      console.log(this.misLibros)
 
-  }
+      for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
+        var tituloArreglo = this.misLibros[this.iterador];
 
-  add_reminder() {
+        if (((tituloArreglo.diaEntrega - (this.Fecha.getDate() - 1)) == 1) && tituloArreglo.mes == (this.Fecha.getMonth() + 1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
+          console.log("ya regresalos")
 
-    this.llenarMisLibros();
-    var horas = this.Fecha.getHours();
-    var minutos = this.Fecha.getMinutes();
+          this.notificacion.requestPermission().then(permiso =>{
+            if(this.notificacion.hasPermission()){
+              this.notificacion.schedule({
+                id: this.iterador,
+                title: "Devuelve el libro a tiempo, evita cargos adicionales",
+                text: "Te queda 1 día, entrega:" + tituloArreglo.tituloPedido, 
+                icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
+                smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
+              });
+            }
+          })
+            
+          
 
-
-    if (horas < 10) { horas = <any>('0' + horas) };
-    if (minutos < 10) { minutos = <any>('0' + minutos) };
-    console.log(this.Fecha.getDate());
-
-    console.log(this.misLibros)
-
-    for (this.iterador = 0; this.iterador < this.misLibros.length; this.iterador++) {
-      var tituloArreglo = this.misLibros[this.iterador];
-
-      if ( (( tituloArreglo.diaEntrega - (this.Fecha.getDate()-1)) == 1) && tituloArreglo.mes == (this.Fecha.getMonth()+1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
-        console.log("ya regresalos")        
-        this.localNotifications.schedule({
-          id: this.iterador,
-          title: "Devuelve el libro a tiempo, evita cargos adicionales",
-          text: "Te queda 1 día, entrega:" + tituloArreglo.tituloPedido,
-          icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
-          smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
-        });
-
-      }else{
-        if((( tituloArreglo.diaEntrega - (this.Fecha.getDate()-1)) <=0) && tituloArreglo.mes == (this.Fecha.getMonth()+1) && tituloArreglo.anio == this.Fecha.getFullYear()){
-          console.log("Se agotó el tiempo")
-          this.localNotifications.schedule({
-            id: this.iterador,
-            title: "Se cargaran cargos de $5 por día",
-            text: "No has entregado:" + tituloArreglo.tituloPedido,
-            icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
-            smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
-          });
+        } else {
+          if (((tituloArreglo.diaEntrega - (this.Fecha.getDate() - 1)) <= 0) && tituloArreglo.mes == (this.Fecha.getMonth() + 1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
+            console.log("Se agotó el tiempo")
+            this.notificacion.schedule({
+              id: this.iterador,
+              title: "Se cargaran cargos de $5 por día",
+              text: "No has entregado:" + tituloArreglo.tituloPedido,
+              icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
+              smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
+            });
+          }
         }
+
+
       }
-      
-  
     }
   }
-}

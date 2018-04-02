@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule} from 'ionic-angular';
+import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 import { AngularFireModule } from 'angularfire2';
@@ -13,29 +13,30 @@ import { LoginServicio } from '../servicios/login/login.servicio';
 import { MejoraContraseñaServicio } from '../servicios/mensaje/mejoraContrase\u00F1a';
 import { HomePage } from '../pages/home/home';
 import { SesionPage } from '../pages/sesion/sesion';
-import { AdministradorPage} from '../pages/administrador/administrador';
+import { AdministradorPage } from '../pages/administrador/administrador';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Keyboard } from '@ionic-native/keyboard';
-
+import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
+import { Cordova } from '@ionic-native/core';
 
 
 @NgModule({
   declarations: [
     MyApp,
-   HomePage,
-   SesionPage,
-   AdministradorPage,
+    HomePage,
+    SesionPage,
+    AdministradorPage,
   ],
   imports: [
     BrowserModule,
-    IonicModule.forRoot(MyApp,{
-      backButtonText:'Atras'
+    IonicModule.forRoot(MyApp, {
+      scrollPadding: false,
+      scrollAssist: false,
+      autoFocusAssist: false
     }),
     AngularFireModule.initializeApp(FireBase_Config),
     AngularFireDatabaseModule,
     AngularFireAuthModule,
-    
-
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -52,7 +53,9 @@ import { Keyboard } from '@ionic-native/keyboard';
     LoginServicio,
     MejoraContraseñaServicio,
     LocalNotifications,
-    Keyboard
+    Keyboard,
+    PhonegapLocalNotification
   ]
 })
 export class AppModule { }
+

@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController, Platform} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController} from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { AdministradorPage } from '../administrador/administrador';
-import firebase from 'firebase'
 import { Keyboard } from '@ionic-native/keyboard';
 
 @IonicPage()
@@ -27,7 +26,6 @@ export class AddUserPage {
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
     public keyboard : Keyboard,
-    private platform : Platform
   ) {
 
     this.formgroup = fb.group({
@@ -39,12 +37,8 @@ export class AddUserPage {
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
 
-    this.platform.ready().then(() => {
-     this.keyboard.disableScroll(true);
-    });
     
   }
-
 
   async login(usuario: Usuario) {
 
