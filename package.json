@@ -46,9 +46,7 @@
     "phonegap-plugin-local-notification": "^1.0.1",
     "rxjs": "5.4.3",
     "sw-toolbox": "3.6.0",
-    "zone.js": "0.8.18",
-    "@ionic/app-scripts": "3.0.0",
-    "typescript": "2.3.4"
+    "zone.js": "0.8.18"
   },
   "devDependencies": {
     "@ionic/app-scripts": "3.0.0",
