@@ -1,11 +1,11 @@
 page-mis-libros {
     .bg-image{
-        background-image: url('../assets/imgs/fondoBueno.png');
+        background: linear-gradient(to bottom, grey 0%,rgb(50, 51, 50) 100%);
         background-repeat: no-repeat;
-        background-position: unset;
+        background-position: center;
         background-size: cover;
-        background-attachment: fixed;
     }
+
     #listas{
         background-color: transparent !important;
         background-size: cover;

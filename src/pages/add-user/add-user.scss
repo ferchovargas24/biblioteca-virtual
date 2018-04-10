@@ -1,16 +1,19 @@
 page-add-user{
+
     .bg-image{
-        background-image: url('../assets/imgs/fondoBueno.png');
+        background: linear-gradient(to bottom, grey 0%,rgb(50, 51, 50) 100%);
         background-repeat: no-repeat;
-        background-position: initial ;
+        background-position: center;
         background-size: cover;
-        background-attachment: initial !important;
-        position: initial !important;
-        scroll-behavior: initial;
     }
 
     #alertas{
             border: none !important;
     }
-
-    }
+    
+    .keyboard-open .footer{
+        display:none;
+        }
+}
+  
+  

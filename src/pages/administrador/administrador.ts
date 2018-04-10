@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams, LoadingController } from 'ionic-angular';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @IonicPage()
 @Component({
@@ -13,13 +14,16 @@ export class AdministradorPage {
   email: string;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private logService: LoginServicio,
-    private loadingCtrl: LoadingController, ) {
+    private loadingCtrl: LoadingController,
+    private backGround: BackgroundMode) {
 
     this.email = this.navParams.get('email')
 
   }
 
-
+  ionViewDidLoad() {
+    this.backGround.enable();
+  }
 
   async logOut() {
     await this.logService.logout();

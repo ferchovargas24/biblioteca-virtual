@@ -3,9 +3,10 @@ import { IonicPage, NavController, NavParams, ToastController, LoadingController
 import firebase from 'firebase';
 import { LoginServicio } from '../../servicios/login/login.servicio';
 import { HomePage } from '../home/home';
-
+import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 @IonicPage()
 @Component({
@@ -32,6 +33,7 @@ export class SesionPage {
     private loadingCtrl: LoadingController,
     private notificacion: LocalNotifications,
     private notificando: PhonegapLocalNotification,
+    private backGround : BackgroundMode
   ) {
 
     this.email = navParams.get('email');
@@ -40,6 +42,7 @@ export class SesionPage {
   ionViewDidLoad() {
 
     this.initializeItems();
+    this.backGround.enable();
     var dia = this.Fecha.getDate();
     var mes = this.Fecha.getMonth() + 1;
     if (mes < 10) { mes = <any>('0' + mes) };
@@ -136,6 +139,7 @@ export class SesionPage {
           var mes = fechaRentado.getMonth() + 1;
           var anio = fechaRentado.getFullYear();
           var diaEntrega = this.Fecha.getDate();
+          console.log(this.Fecha.getDate());
           if (mes < 10) { mes = <any>('0' + mes) };
           if (dia < 10) { dia = <any>('0' + dia) };
           const usuarioReference: firebase.database.Reference = firebase.database().ref(`/administradores/` + this.idUsuario + '/misLibros');
@@ -148,21 +152,17 @@ export class SesionPage {
           }).present();
 
           var idIncrement;
-          this.notificando.requestPermission().then(permission => {
-            if (permission == 'granted') {
-              this.notificando.requestPermission().then(permiso=>{
-                if (permission =='granted') {
-                  this.notificando.create('Aviso', {
-                    tag: 'Nueva petición',
-                    body: 'Has solicitado: ' + tituloPedido,
-                    icon: 'https://thumbs.dreamstime.com/b/icono-o-s%C3%ADmbolo-de-los-libros-6649973.jpg'
-                  });
-    
-                }
-              })
-             
+
+          this.notificando.requestPermission().then(permiso=>{
+            if (permiso =='granted') {
+              this.notificando.create('Aviso', {
+                tag: 'Nueva petición',
+                body: 'Has solicitado: ' + tituloPedido,
+                icon: 'https://thumbs.dreamstime.com/b/icono-o-s%C3%ADmbolo-de-los-libros-6649973.jpg'
+              });
+
             }
-          });
+          })
           this.libroRef.on('value', libroSnapshot => {
             libroSnapshot.forEach(libroSnap => {
 
@@ -229,14 +229,15 @@ export class SesionPage {
         if (((tituloArreglo.diaEntrega - (this.Fecha.getDate() - 1)) == 1) && tituloArreglo.mes == (this.Fecha.getMonth() + 1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
           console.log("ya regresalos")
 
-          this.notificacion.requestPermission().then(permiso =>{
-            if(this.notificacion.hasPermission()){
-              this.notificacion.schedule({
-                id: this.iterador,
-                title: "Devuelve el libro a tiempo, evita cargos adicionales",
-                text: "Te queda 1 día, entrega:" + tituloArreglo.tituloPedido, 
-                icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
-                smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
+          
+          this.notificando.requestPermission().then(permiso =>{
+            if(permiso == 'granted'){
+              this.notificando.create('Recordatorio',{
+                tag: "iterador",
+                dir:"auto",
+                body: "Queda 1 día a entregar:" + tituloArreglo.tituloPedido, 
+                icon: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Antu_appointment-reminder.svg/2000px-Antu_appointment-reminder.svg.png',
+
               });
             }
           })
@@ -246,13 +247,17 @@ export class SesionPage {
         } else {
           if (((tituloArreglo.diaEntrega - (this.Fecha.getDate() - 1)) <= 0) && tituloArreglo.mes == (this.Fecha.getMonth() + 1) && tituloArreglo.anio == this.Fecha.getFullYear()) {
             console.log("Se agotó el tiempo")
-            this.notificacion.schedule({
-              id: this.iterador,
-              title: "Se cargaran cargos de $5 por día",
-              text: "No has entregado:" + tituloArreglo.tituloPedido,
-              icon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png',
-              smallIcon: 'http://www.artesgb.com/wp-content/uploads/2016/12/twitter.png'
-            });
+            this.notificando.requestPermission().then(permiso =>{
+              if(permiso == 'granted'){
+                this.notificando.create('Recordatorio',{
+                  tag: "Se harán cargos adicionales",
+                  body: "Se agotó el tiempo para entregar:" + tituloArreglo.tituloPedido, 
+                  icon: 'https://icon-icons.com/icons2/1302/PNG/512/dangersign_85806.png',
+  
+                });
+              }
+            })
+            
           }
         }
 

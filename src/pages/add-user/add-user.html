@@ -7,10 +7,9 @@
 </ion-header>
 
 
-
-<ion-content padding class="bg-image" preference name="KeyboardResize" value="false" >
-
-  <form [formGroup]="formgroup">
+<ion-content padding="true" class="bg-image" [attr.noScroll]="shouldScroll" >
+  
+<form [formGroup]="formgroup">
     <br>
     <br>
     <br>
@@ -69,8 +68,7 @@
   </form>
 
 </ion-content>
-
-<ion-footer color="primary" scroll="no">
+<ion-footer color="primary" id="footer">
     <ion-navbar transparent>
   <button class="footer" ion-button style="color: white;" clear block [disabled]="!formgroup.valid" (click)="login(usuario)">Iniciar Sesión</button>
   </ion-navbar>

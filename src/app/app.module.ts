@@ -18,6 +18,8 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
 import { Keyboard } from '@ionic-native/keyboard';
 import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notification';
 import { Cordova } from '@ionic-native/core';
+import { AndroidPermissions } from '@ionic-native/android-permissions';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 
 @NgModule({
@@ -54,7 +56,9 @@ import { Cordova } from '@ionic-native/core';
     MejoraContraseñaServicio,
     LocalNotifications,
     Keyboard,
-    PhonegapLocalNotification
+    PhonegapLocalNotification,
+    AndroidPermissions,
+    BackgroundMode
   ]
 })
 export class AppModule { }

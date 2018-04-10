@@ -40,8 +40,8 @@ $colors: (
   light:      #f4f4f4,
   dark:       #222,
   naranja:    #FF893B ,
-  blanco: white,
-  alertas: rgb(201, 49, 49)
+  blanco:     white,
+  alertas:    rgb(201, 49, 49)
 );
 
 
@@ -55,10 +55,6 @@ $colors: (
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
@@ -73,7 +69,7 @@ $colors: (
 // so that the above variables are used and Ionic's
 // default are overridden.
 
-@import "ionic.theme.default";
+@import "ionic.theme.dark";
 
 
 // Ionicons

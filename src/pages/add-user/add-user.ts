@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, ToastController, LoadingController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, ToastController, LoadingController } from 'ionic-angular';
 import { Usuario } from '../../app/Models/User/user.model';
 import { FormBuilder, FormGroup, Validators, AbstractControl } from '@angular/forms'
 import { SesionPage } from '../sesion/sesion';
@@ -20,25 +20,25 @@ export class AddUserPage {
   passwordUsu: AbstractControl;
 
 
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private logingIn: LoginServicio,
     public fb: FormBuilder,
     private toastCtrl: ToastController,
     private loadingCtrl: LoadingController,
-    public keyboard : Keyboard,
+    public keyboard: Keyboard,
   ) {
 
     this.formgroup = fb.group({
       emailUsu: ['', Validators.compose([Validators.maxLength(30), Validators.pattern('^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$'), Validators.required])],
-      passwordUsu: ['',Validators.compose([Validators.minLength(6),Validators.maxLength(14), Validators.pattern('[a-zA-Z0-9]*') ,Validators.required]) ],
+      passwordUsu: ['', Validators.compose([Validators.minLength(6), Validators.maxLength(14), Validators.pattern('[a-zA-Z0-9]*'), Validators.required])],
     });
 
 
     this.emailUsu = this.formgroup.controls['emailUsu'];
     this.passwordUsu = this.formgroup.controls['passwordUsu'];
-
-    
   }
+
 
   async login(usuario: Usuario) {
 
@@ -47,7 +47,7 @@ export class AddUserPage {
 
     let loading = this.loadingCtrl.create({
       spinner: 'dots',
-      content:"Iniciando"
+      content: "Iniciando"
     });
     loading.present();
 
