@@ -17,7 +17,7 @@ export class EliminarLibroPage {
   usuarios: Array<any> = [];
   idUsuarioLibro;
   currentUser;
-
+  isEnabled: boolean =false;
   constructor(public navCtrl: NavController, public navParams: NavParams,
     private mensaje: ToastController) {
 
@@ -26,6 +26,10 @@ export class EliminarLibroPage {
   ionViewDidLoad() {
 
     this.mostrarUsuarios();
+  }
+
+  habilitaBoton(){
+    this.isEnabled=true;
   }
 
   mostrarUsuarios() {

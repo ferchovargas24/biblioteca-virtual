@@ -6,4 +6,16 @@ page-administrador {
         background-position: center;
         background-size: cover;
     }
+
+    .paginaActiva{
+        background-color: rgb(204, 26, 26);
+        opacity: .2;
+        border-bottom: red
+    }
+    .bg-menu{
+        background-image: url('../assets/imgs/fondoBueno2.jpg');
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+    }
 }

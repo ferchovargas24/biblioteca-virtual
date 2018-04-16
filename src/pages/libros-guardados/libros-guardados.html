@@ -1,0 +1,23 @@
+
+<ion-header no-border>
+
+  <ion-navbar transparent>
+    <ion-title>Galería</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="bg-image">
+    <ion-searchbar (ionInput)="getItems($event)"></ion-searchbar>
+    <ion-list>
+      <ion-item id="listas" *ngFor="let libro of libros">
+        <ion-thumbnail item-start>
+          <img src="{{libro.imagen}}">
+        </ion-thumbnail>
+        <h2 style="color:white">{{libro.autor}}</h2>
+        <p style="color:white">{{libro.titulo}}</p>
+        <p style="color:white">Libros disponibles: {{libro.cantidad}}</p>
+      </ion-item>
+    </ion-list>
+</ion-content>

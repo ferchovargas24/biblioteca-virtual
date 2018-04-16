@@ -1,46 +1,26 @@
 <ion-header no-border>
-
   <ion-navbar transparent>
     <button ion-button menuToggle icon-only>
       <ion-icon name='menu'></ion-icon>
     </button>
-
-      <ion-title> Administración</ion-title>
+    <ion-title> Administración</ion-title>
   </ion-navbar>
 </ion-header>
-
-
 <ion-content padding class="bg-image">
-
   <ion-menu [content]="mycontent">
-    <ion-content>
+    <ion-content class="bg-menu">
       <ion-list>
-        <button ion-item (click)="openPage('PaginaRegistroPage')">
-          Registrar usuario
-        </button>
-        <button ion-item (click)="openPage('PaginaRegLibroPage')">
-          Guardar libro
-        </button>
-        <button ion-item (click)="openPage('EliminarLibroPage')">
-          Entrega de libros
-        </button>
-        <button ion-item (click)="openPage('HistorialpedidosPage')">
-          Historial de pedidos
-        </button>
-        <button ion-item (click)="openPage('EliminarLibroDeBasePage')">
-          Dar de baja y actualizar libros
-        </button>
-        <button ion-item (click)="logOut()">
-          Cerrar Sesión
+        <button  ion-item style="background:transparent" *ngFor="let pagina of paginas" [class.paginaActiva]="paginaActivar(pagina.component)" (click)="abrirPagina(pagina)"
+          menuClose>
+          <ion-icon item-right name="{{ pagina.icon }}"></ion-icon>
+          {{ pagina.titulo }}
         </button>
       </ion-list>
     </ion-content>
   </ion-menu>
   <ion-nav #mycontent [root]="rootPage"></ion-nav>
 
-  <h1 style="color:white">Bienvenido</h1>
-  <p>Esta es la app de administración
-  </p>
-  <p> Por favor revisa las opciones que ofrecemos </p>
-  <p>en el menu.</p>
+  <h1>Bienvenido</h1>
+  <p>Por favor revisa las</p>
+  <p>opciones de nuestro menu</p>
 </ion-content>

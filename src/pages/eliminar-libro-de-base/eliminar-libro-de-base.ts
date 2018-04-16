@@ -35,7 +35,6 @@ export class EliminarLibroDeBasePage {
   
 
   habilitaBoton(){
-    console.log("Si da click" + this.isEnabled)
     this.isEnabled=true;
   }
   mostrarOpciones(libro) {

@@ -14,12 +14,14 @@
 <ion-content padding class="bg-image">
 
   <ion-menu type="overlay"  [content]="mycontent">
-    <ion-content>
+    <ion-content class="bg-menu">
       <ion-list>
-        <button ion-item (click)="openPage('MisLibrosPage')">
+        <button style="background:transparent" ion-item (click)="openPage('MisLibrosPage')">
+            <ion-icon item-right name="ios-book-outline"></ion-icon>
           Mis libros
         </button>
-        <button ion-item (click)="logOut()">
+        <button style="background:transparent" ion-item (click)="logOut()">
+            <ion-icon item-right name="ios-log-out-outline"></ion-icon>
           Cerrar Sesión
         </button>
       </ion-list>

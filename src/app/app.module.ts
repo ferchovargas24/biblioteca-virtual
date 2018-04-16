@@ -20,6 +20,12 @@ import { PhonegapLocalNotification } from '@ionic-native/phonegap-local-notifica
 import { Cordova } from '@ionic-native/core';
 import { AndroidPermissions } from '@ionic-native/android-permissions';
 import { BackgroundMode } from '@ionic-native/background-mode';
+import { PaginaRegistroPage } from '../pages/pagina-registro/pagina-registro';
+import { PaginaRegLibroPage } from '../pages/pagina-reg-libro/pagina-reg-libro';
+import { EliminarLibroDeBasePage } from '../pages/eliminar-libro-de-base/eliminar-libro-de-base';
+import { EliminarLibroPage } from '../pages/eliminar-libro/eliminar-libro';
+import { HistorialpedidosPage } from '../pages/historialpedidos/historialpedidos';
+import { LibrosGuardadosPage } from '../pages/libros-guardados/libros-guardados';
 
 
 @NgModule({
@@ -28,6 +34,12 @@ import { BackgroundMode } from '@ionic-native/background-mode';
     HomePage,
     SesionPage,
     AdministradorPage,
+    PaginaRegistroPage,
+    PaginaRegLibroPage,
+    EliminarLibroDeBasePage,
+    EliminarLibroPage,
+    HistorialpedidosPage,
+    LibrosGuardadosPage
   ],
   imports: [
     BrowserModule,
@@ -46,6 +58,12 @@ import { BackgroundMode } from '@ionic-native/background-mode';
     HomePage,
     SesionPage,
     AdministradorPage,
+    PaginaRegistroPage,
+    PaginaRegLibroPage,
+    EliminarLibroDeBasePage,
+    EliminarLibroPage,
+    HistorialpedidosPage,
+    LibrosGuardadosPage
   ],
   providers: [
     StatusBar,

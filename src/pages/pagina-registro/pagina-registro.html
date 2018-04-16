@@ -17,10 +17,7 @@
     <br>
     <br>
     <br>
-    <br>
-    <br>
-    <br>
-    <br>
+
     <ion-item style="font-size: 14px;background:none;">
       <ion-label floating style="color:white">Usuario *</ion-label>
       <ion-input style="color:white;border-bottom-color:white;box-shadow:none;" type="email" formControlName="emailUsu" [(ngModel)]="usuario.email"></ion-input>
@@ -74,6 +71,6 @@
     <ion-checkbox [(ngModel)]="admin"></ion-checkbox>
   </ion-item>
 
-  <button ion-button style="color: white;" clear block (click)="registarUsuario(usuario); registrarEnBase(usuario,admin)">Registrar</button>
+  <button ion-button style="color: white;" clear block (click)="registarUsuario(usuario); registrarEnBase(usuario,admin)" [disabled]="!formgroup.valid">Registrar</button>
 
 </ion-content>
